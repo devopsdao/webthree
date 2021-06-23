@@ -2,7 +2,7 @@ part of 'package:web3dart/web3dart.dart';
 
 class TransactionInformation {
   TransactionInformation.fromMap(Map<String, dynamic> map)
-      : blockHash = map['blockHash'] as String,
+      : blockHash = map['blockHash'] != null ? map['blockHash'] as String : null,
         blockNumber = map['blockNumber'] != null
             ? BlockNum.exact(int.parse(map['blockNumber'] as String))
             : const BlockNum.pending(),
@@ -12,12 +12,8 @@ class TransactionInformation {
         hash = map['hash'] as String,
         input = hexToBytes(map['input'] as String),
         nonce = int.parse(map['nonce'] as String),
-        to = map['to'] != null
-            ? EthereumAddress.fromHex(map['to'] as String)
-            : null,
-        transactionIndex = map['transactionIndex'] != null
-            ? int.parse(map['transactionIndex'] as String)
-            : null,
+        to = map['to'] != null ? EthereumAddress.fromHex(map['to'] as String) : null,
+        transactionIndex = map['transactionIndex'] != null ? int.parse(map['transactionIndex'] as String) : null,
         value = EtherAmount.inWei(BigInt.parse(map['value'] as String)),
         v = int.parse(map['v'] as String),
         r = hexToInt(map['r'] as String),
@@ -73,6 +69,13 @@ class TransactionInformation {
 
   /// The ECDSA full signature used to sign this transaction.
   MsgSignature get signature => MsgSignature(r, s, v);
+
+  @override
+  String toString() {
+    return 'TransactionInformation{ '
+        'transactionIndex: $transactionIndex, blockHash: $blockHash, '
+        'blockNumber: $blockNumber, from: ${from.hex}, to: ${to?.hex} }';
+  }
 }
 
 class TransactionReceipt {
@@ -96,25 +99,15 @@ class TransactionReceipt {
         blockNumber = map['blockNumber'] != null
             ? BlockNum.exact(int.parse(map['blockNumber'] as String))
             : const BlockNum.pending(),
-        from = map['from'] != null
-            ? EthereumAddress.fromHex(map['from'] as String)
-            : null,
-        to = map['to'] != null
-            ? EthereumAddress.fromHex(map['to'] as String)
-            : null,
+        from = map['from'] != null ? EthereumAddress.fromHex(map['from'] as String) : null,
+        to = map['to'] != null ? EthereumAddress.fromHex(map['to'] as String) : null,
         cumulativeGasUsed = hexToInt(map['cumulativeGasUsed'] as String),
-        gasUsed =
-            map['gasUsed'] != null ? hexToInt(map['gasUsed'] as String) : null,
-        contractAddress = map['contractAddress'] != null
-            ? EthereumAddress.fromHex(map['contractAddress'] as String)
-            : null,
-        status = map['status'] != null
-            ? (hexToDartInt(map['status'] as String) == 1)
-            : null,
+        gasUsed = map['gasUsed'] != null ? hexToInt(map['gasUsed'] as String) : null,
+        contractAddress =
+            map['contractAddress'] != null ? EthereumAddress.fromHex(map['contractAddress'] as String) : null,
+        status = map['status'] != null ? (hexToDartInt(map['status'] as String) == 1) : null,
         logs = map['logs'] != null
-            ? (map['logs'] as List<dynamic>)
-                .map((log) => FilterEvent.fromMap(log as Map<String, dynamic>))
-                .toList()
+            ? (map['logs'] as List<dynamic>).map((log) => FilterEvent.fromMap(log as Map<String, dynamic>)).toList()
             : [];
 
   /// Hash of the transaction (32 bytes).
