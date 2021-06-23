@@ -93,7 +93,7 @@ class Web3Client {
 
   /// Constructs a new [Credentials] with the provided [privateKey] by using
   /// an [EthPrivateKey].
-  Future<Credentials> credentialsFromPrivateKey(String privateKey) {
+  Future<EthPrivateKey> credentialsFromPrivateKey(String privateKey) {
     return _operations.privateKeyFromHex(privateKey);
   }
 
@@ -234,10 +234,10 @@ class Web3Client {
   }
 
   /// Returns an receipt of a transaction based on its hash.
-  Future<TransactionReceipt> getTransactionReceipt(String hash) {
-    return _makeRPCCall<Map<String, dynamic>>(
+  Future<TransactionReceipt?> getTransactionReceipt(String hash) {
+    return _makeRPCCall<Map<String, dynamic>?>(
             'eth_getTransactionReceipt', [hash])
-        .then((s) => TransactionReceipt.fromMap(s));
+        .then((s) => s != null ? TransactionReceipt.fromMap(s) : null);
   }
 
   /// Gets the code of a contract at the specified [address]
@@ -362,6 +362,7 @@ class Web3Client {
           if (amountOfGas != null) 'gas': '0x${amountOfGas.toRadixString(16)}',
           if (gasPrice != null)
             'gasPrice': '0x${gasPrice.getInWei.toRadixString(16)}',
+          if (value != null) 'value': '0x${value.getInWei.toRadixString(16)}',
           if (data != null) 'data': bytesToHex(data, include0x: true),
         },
       ],
@@ -434,6 +435,14 @@ class Web3Client {
   /// - https://solidity.readthedocs.io/en/develop/contracts.html#events, which
   /// explains more about how events are encoded.
   Stream<FilterEvent> events(FilterOptions options) {
+    if (socketConnector != null) {
+      // The real-time rpc nodes don't support listening to old data, so handle
+      // that here.
+      return Stream.fromFuture(getLogs(options))
+          .expand((e) => e)
+          .followedBy(_filters.addFilter(_EventFilter(options)));
+    }
+
     return _filters.addFilter(_EventFilter(options));
   }
 

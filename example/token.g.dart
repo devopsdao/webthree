@@ -39,7 +39,9 @@ class Token extends _i1.GeneratedContract {
     return (response[0] as BigInt);
   }
 
-  Stream<Transfer> transfer({_i1.BlockNum? fromBlock, _i1.BlockNum? toBlock}) {
+  /// Returns a live stream of all Transfer events emitted by this contract.
+  Stream<Transfer> transferEvents(
+      {_i1.BlockNum? fromBlock, _i1.BlockNum? toBlock}) {
     final event = self.event('Transfer');
     final filter = _i1.FilterOptions.events(
         contract: self, event: event, fromBlock: fromBlock, toBlock: toBlock);
