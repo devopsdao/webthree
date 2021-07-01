@@ -59,11 +59,20 @@ class ContractGenerator implements Builder {
 
     final emitter = DartEmitter(
         allocator: Allocator.simplePrefixing(), useNullSafetySyntax: true);
-    return DartFormatter().format('''
+    final source = '''
 // Generated code, do not modify. Run `build_runner build` to re-generate!
 // @dart=2.12
-${library.accept(emitter)}
-''');
+${library.accept(emitter)}''';
+
+    try {
+      return DartFormatter().format(source);
+    } on Object {
+      // The source couldn't be parsed. Emit it anyways to make debugging the
+      // generator easier, but this is likely our fault.
+      log.severe('Could not format generated source. This is likely a bug in '
+          'web3dart');
+      return source;
+    }
   }
 }
 
@@ -86,6 +95,11 @@ class _ContractGeneration {
   Library generate() {
     return Library((b) {
       b.body
+        ..add(Block((b) => b
+          ..addExpression(contractAbi.newInstanceNamed(
+            'fromJson',
+            [literalString(_abiCode), literalString(_abi.name)],
+          ).assignFinal('_contractAbi'))))
         ..add(Class(_createContractClass))
         ..addAll(_additionalSpecs);
     });
@@ -129,10 +143,7 @@ class _ContractGeneration {
       ])
       ..initializers.add(callSuper([
         deployedContract.newInstance([
-          contractAbi.newInstanceNamed(
-            'fromJson',
-            [literalString(_abiCode), literalString(_abi.name)],
-          ),
+          refer('_contractAbi'),
           refer('address'),
         ]),
         refer('client'),
@@ -156,8 +167,37 @@ class _ContractGeneration {
         ..required = true));
     }
 
+    if (fun.isConstant) {
+      b.optionalParameters.add(Parameter((b) => b
+        ..name = 'atBlock'
+        ..named = true
+        ..type = blockNum.rebuild((e) => e.isNullable = true)));
+    } else {
+      b.optionalParameters.add(Parameter((b) => b
+        ..name = 'transaction'
+        ..named = true
+        ..type = transactionType.rebuild((e) => e.isNullable = true)));
+    }
+
     final docs = documentation?.forFunction(fun);
-    if (docs != null) b.docs.add(docs);
+    if (docs != null) {
+      b.docs
+        ..add(docs)
+        // Add blank line if we had regular docs.
+        ..add('///');
+    }
+
+    if (fun.isConstant) {
+      b.docs.add('''
+/// The optional [atBlock] parameter can be used to view historical data. When
+/// set, the function will be evaluated in the specified block. By default, the
+/// latest on-chain block will be used.''');
+    } else {
+      b.docs.add('''
+/// The optional [transaction] parameter can be used to override parameters
+/// like the gas price, nonce and max gas. The `data` and `to` fields will be
+/// set by the contract.''');
+    }
   }
 
   List<Parameter> _parametersFor(ContractFunction function) {
@@ -188,7 +228,7 @@ class _ContractGeneration {
       ..addExpression(_function(function).assignFinal('function'))
       ..addExpression(literalList(params).assignFinal('params'))
       ..addExpression(refer('read')
-          .call([argFunction, argParams])
+          .call([argFunction, argParams, refer('atBlock')])
           .awaited
           .assignFinal('response'))
       ..addExpression(returnValue.returned));
@@ -196,20 +236,17 @@ class _ContractGeneration {
 
   Code _bodyForMutable(ContractFunction function) {
     final params = function.parameters.map((e) => refer(e.name)).toList();
+    final funWrite = refer('write').call([
+      argCredentials,
+      refer('transaction'),
+      refer('function'),
+      refer('params'),
+    ]);
 
     return Block((b) => b
       ..addExpression(_function(function).assignFinal('function'))
       ..addExpression(literalList(params).assignFinal('params'))
-      ..addExpression(transactionType.newInstanceNamed(
-        'callContract',
-        const [],
-        {
-          'contract': refer('self'),
-          'function': refer('function'),
-          'parameters': refer('params'),
-        },
-      ).assignFinal('transaction'))
-      ..addExpression(funWrite));
+      ..addExpression(funWrite.returned));
   }
 
   /// Creates a custom class encapsulating the return values of a [function]
