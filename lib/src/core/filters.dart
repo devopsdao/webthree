@@ -307,7 +307,7 @@ class _FilterEngine {
         _registerToPubSub(instantiated, filter.createPubSub());
       } else {
         _registerToAPI(instantiated);
-        _startTicking();
+        //_startTicking();
       }
     };
 
@@ -320,6 +320,7 @@ class _FilterEngine {
     try {
       final response = await _rpc.call(request.method, request.params);
       filter.id = response.result as String;
+      _startTicking();
     } on RPCError catch (e, s) {
       filter._controller.addError(e, s);
       await filter._controller.close();
