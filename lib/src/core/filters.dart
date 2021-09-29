@@ -354,13 +354,17 @@ class _FilterEngine {
       final filterSnapshot = List.of(_filters);
 
       for (final filter in filterSnapshot) {
-        final updatedData =
-            await _rpc.call('eth_getFilterChanges', [filter.id]);
+        try {
+          final updatedData =
+              await _rpc.call('eth_getFilterChanges', [filter.id]);
 
-        for (final payload in updatedData.result) {
-          if (!filter._controller.isClosed) {
-            _parseAndAdd(filter, payload);
+          for (final payload in updatedData.result) {
+            if (!filter._controller.isClosed) {
+              _parseAndAdd(filter, payload);
+            }
           }
+        } on Exception catch (_) {
+          break;
         }
       }
     } finally {
