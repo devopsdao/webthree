@@ -3,18 +3,20 @@ import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:meta/meta.dart';
+import 'package:pointycastle/api.dart';
+import 'package:pointycastle/block/aes_fast.dart';
 import 'package:pointycastle/digests/sha256.dart';
-import 'package:pointycastle/export.dart';
-import 'package:pointycastle/macs/hmac.dart';
+import 'package:pointycastle/key_derivators/api.dart';
 import 'package:pointycastle/key_derivators/pbkdf2.dart' as pbkdf2;
 import 'package:pointycastle/key_derivators/scrypt.dart' as scrypt;
+import 'package:pointycastle/macs/hmac.dart';
+import 'package:pointycastle/stream/ctr.dart';
 
 import '../crypto/formatting.dart';
 import '../crypto/keccak.dart';
 import '../crypto/random_bridge.dart';
 import '../utils/typed_data.dart';
 import '../utils/uuid.dart';
-
 import 'credentials.dart';
 
 abstract class _KeyDerivator {

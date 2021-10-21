@@ -1,3 +1,16 @@
+## 2.3.1
+
+- Fix the `Web3Client.custom` constructor not setting all required fields.
+
+## 2.3.0
+
+- Support overloaded methods for generated contracts
+
+## 2.2.0
+
+- Add `EthPrivateKey.publicKey` getters
+- Fix `window.ethereum` always being non-null, even if no provider is available
+
 ## 2.1.4
 
 - Fix a generator crash for unexpected `devdoc` values

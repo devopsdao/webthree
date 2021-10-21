@@ -25,12 +25,12 @@ class Web3Client {
   /// [httpClient] will be used to send requests to the rpc server.
   /// Am isolate will be used to perform expensive operations, such as signing
   /// transactions or computing private keys.
-  Web3Client(String url, Client httpClient, {this.socketConnector}) : _jsonRpc = JsonRPC(url, httpClient) {
-    _operations = _ExpensiveOperations();
+  Web3Client(String url, Client httpClient, {SocketConnector? socketConnector})
+      : this.custom(JsonRPC(url, httpClient), socketConnector: socketConnector);
+
+  Web3Client.custom(RpcService rpc, {this.socketConnector}) : _jsonRpc = rpc {
     _filters = _FilterEngine(this);
   }
-
-  Web3Client.custom(RpcService rpc, {this.socketConnector}) : _jsonRpc = rpc;
 
   static const BlockNum _defaultBlock = BlockNum.current();
 
@@ -44,8 +44,7 @@ class Web3Client {
   final SocketConnector? socketConnector;
 
   rpc.Peer? _streamRpcPeer;
-  late _ExpensiveOperations _operations;
-  late _FilterEngine _filters;
+  late final _FilterEngine _filters;
 
   ///Whether errors, handled or not, should be printed to the console.
   bool printErrors = false;
@@ -73,9 +72,7 @@ class Web3Client {
 
     final socket = socketConnector!();
     _streamRpcPeer = rpc.Peer(socket)
-      ..registerMethod('eth_subscription', (rpc.Parameters params) {
-        _filters.handlePubSubNotification(params);
-      });
+      ..registerMethod('eth_subscription', _filters.handlePubSubNotification);
 
     _streamRpcPeer?.listen().then((_) {
       // .listen() will complete when the socket is closed, so reset client
@@ -92,8 +89,9 @@ class Web3Client {
 
   /// Constructs a new [Credentials] with the provided [privateKey] by using
   /// an [EthPrivateKey].
+  @Deprecated('Use EthPrivateKey.fromHex instead')
   Future<EthPrivateKey> credentialsFromPrivateKey(String privateKey) {
-    return _operations.privateKeyFromHex(privateKey);
+    return Future.value(EthPrivateKey.fromHex(privateKey));
   }
 
   /// Returns the version of the client we're sending requests to.
@@ -294,7 +292,8 @@ class Web3Client {
       client: this,
     );
 
-    return _operations.signTransaction(signingInput);
+    return _signTransaction(signingInput.transaction, signingInput.credentials,
+        signingInput.chainId);
   }
 
   /// Calls a [function] defined in the smart [contract] and returns it's
