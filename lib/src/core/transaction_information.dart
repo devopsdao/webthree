@@ -19,8 +19,44 @@ class TransactionInformation {
     required this.v
   });
 
-  factory TransactionInformation.fromMap(Map<String, dynamic> map) {
+  TransactionInformation.noSignature({
+    required this.blockHash,
+    required this.blockNumber,
+    required this.from,
+    required this.gas,
+    required this.gasPrice,
+    required this.hash,
+    required this.input,
+    required this.nonce,
+    required this.to,
+    required this.transactionIndex,
+    required this.value
+  });
 
+  factory TransactionInformation.returnFromTxHash(Map<String, dynamic> map) {
+    return TransactionInformation.noSignature(
+        blockHash: map['blockHash'] as String,
+        blockNumber: map['blockNumber'] != null ? BlockNum.exact(
+            int.parse(map['blockNumber'] as String)) : const BlockNum.pending(),
+        from: EthereumAddress.fromHex(map['from'] as String),
+        gas: int.parse(map['gas'] as String),
+        gasPrice: EtherAmount.inWei(BigInt.parse(map['gasPrice'] as String)),
+        hash: map['hash'] as String,
+        input: hexToBytes(map['input'] as String),
+        nonce: int.parse(map['nonce'] as String),
+        to: map['to'] != null
+            ? EthereumAddress.fromHex(map['to'] as String)
+            : null,
+        transactionIndex: map['transactionIndex'] != null ? int.parse(
+            map['transactionIndex'] as String) : null,
+        value: EtherAmount.inWei(BigInt.parse(map['value'] as String)),
+        // v: int.parse(map['v'] as String),
+        // r: hexToInt(map['r'] as String),
+        // s: hexToInt(map['s'] as String)
+    );
+  }
+
+  factory TransactionInformation.fromMap(Map<String, dynamic> map) {
     return TransactionInformation(
         blockHash: map['blockHash'] as String,
         blockNumber: map['blockNumber'] != null ? BlockNum.exact(
@@ -82,13 +118,13 @@ class TransactionInformation {
 
   /// A cryptographic recovery id which can be used to verify the authenticity
   /// of this transaction together with the signature [r] and [s]
-  final int v;
+  late final int v;
 
   /// ECDSA signature r
-  final BigInt r;
+  late final BigInt r;
 
   /// ECDSA signature s
-  final BigInt s;
+  late final BigInt s;
 
   /// The ECDSA full signature used to sign this transaction.
   MsgSignature get signature => MsgSignature(r, s, v);
