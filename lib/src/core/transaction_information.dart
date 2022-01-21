@@ -18,6 +18,9 @@ class TransactionInformation {
         transactionIndex = map['transactionIndex'] != null
             ? int.parse(map['transactionIndex'] as String)
             : null,
+        timestamp = map['timestamp'] != null
+            ? int.parse(map['timestamp'] as String)
+            : null,
         value = EtherAmount.inWei(BigInt.parse(map['value'] as String)),
         v = int.parse(map['v'] as String),
         r = hexToInt(map['r'] as String),
@@ -60,6 +63,9 @@ class TransactionInformation {
 
   /// The amount of Ether sent with this transaction.
   final EtherAmount value;
+
+  /// The time of the transaction
+  int? timestamp;
 
   /// A cryptographic recovery id which can be used to verify the authenticity
   /// of this transaction together with the signature [r] and [s]
