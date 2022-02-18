@@ -241,6 +241,17 @@ class Web3Client {
         .then((s) => TransactionInformation.fromMap(s));
   }
 
+  /// Returns the information about a transaction requested by transaction hash
+  Future<List<TransactionInformation>> getPendingTransactions() {
+    return _makeRPCCall<List<dynamic>>('eth_pendingTransactions')
+        .then((transactions) {
+      return transactions
+          .map((transaction) => TransactionInformation.fromMap(
+              transaction as Map<String, dynamic>))
+          .toList();
+    });
+  }
+
   /// Returns the transactions history for an address
   /// [transactionHistory].
   Future<List<TransactionInformation>> getTransactionHistory(
