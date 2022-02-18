@@ -6,13 +6,7 @@ A dart library that connects to interact with the Ethereum blockchain. It connec
 to an Ethereum node to send transactions, interact with smart contracts and much
 more!
 
-## This package is transfered to a new maintainer
-
-The original creator of this package no longer is maintaining it. And he is kind enought to transfer the ownership to me. The lisence will remain the same keeping Simon Binder as the original author of the package. Here is the message from them:
-
-> I no longer want to support, contribute to, or be associated with cryptocurrencies and web3. So, the package is marked as discontinued and the repository is archived. If anyone wants to continue maintaining this package, please get in touch.
-
-### Features
+## Features
 
 - Connect to an Ethereum node with the rpc-api, call common methods
 - Send signed Ethereum transactions
