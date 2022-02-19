@@ -1,3 +1,7 @@
+## 2.3.5
+
+- Ensuring quality and performance.
+
 ## 2.3.4
 
 - Adds `name`, `symbol` and `decimals` functions to ERC20.
