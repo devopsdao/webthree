@@ -45,7 +45,7 @@ class FixedBytes extends AbiType<Uint8List> {
   @override
   DecodingResult<Uint8List> decode(ByteBuffer buffer, int offset) {
     return DecodingResult(
-      buffer.asUint8List(offset, length),
+      buffer.safeAsUint8List(offset, length),
       sizeUnitBytes,
     );
   }
@@ -102,7 +102,7 @@ class DynamicBytes extends AbiType<Uint8List> {
 
     // first 32 bytes are taken for the encoded size, read from there
     return DecodingResult(
-      buffer.asUint8List(offset + sizeUnitBytes, length),
+      buffer.safeAsUint8List(offset + sizeUnitBytes, length),
       sizeUnitBytes + length + padding,
     );
   }

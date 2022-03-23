@@ -5,6 +5,7 @@ import 'package:meta/meta.dart';
 import '../../../credentials.dart';
 import '../../crypto/formatting.dart';
 import '../../utils/length_tracking_byte_sink.dart';
+import '../../utils/typed_data.dart';
 import 'types.dart';
 
 abstract class _IntTypeBase extends AbiType<BigInt> {
@@ -34,7 +35,7 @@ abstract class _IntTypeBase extends AbiType<BigInt> {
   DecodingResult<BigInt> decode(ByteBuffer buffer, int offset) {
     // we're always going to read a 32-byte block for integers
     return DecodingResult(
-        _decode32Bytes(buffer.asUint8List(offset, sizeUnitBytes)),
+        _decode32Bytes(buffer.safeAsUint8List(offset, sizeUnitBytes)),
         sizeUnitBytes);
   }
 
@@ -114,7 +115,7 @@ class AddressType extends AbiType<EthereumAddress> {
 
   @override
   DecodingResult<EthereumAddress> decode(ByteBuffer buffer, int offset) {
-    final addressBytes = buffer.asUint8List(
+    final addressBytes = buffer.safeAsUint8List(
         offset + _paddingLen, EthereumAddress.addressByteLength);
     return DecodingResult(EthereumAddress(addressBytes), sizeUnitBytes);
   }
@@ -150,7 +151,7 @@ class BoolType extends AbiType<bool> {
 
   @override
   DecodingResult<bool> decode(ByteBuffer buffer, int offset) {
-    final decoded = buffer.asUint8List(offset, sizeUnitBytes);
+    final decoded = buffer.safeAsUint8List(offset, sizeUnitBytes);
     final value = (decoded[sizeUnitBytes - 1] & 1) == 1;
 
     return DecodingResult(value, sizeUnitBytes);

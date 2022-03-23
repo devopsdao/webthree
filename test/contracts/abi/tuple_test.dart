@@ -1,5 +1,6 @@
 import 'package:test/test.dart';
 import 'package:web3dart/contracts.dart';
+import 'package:web3dart/crypto.dart';
 
 import 'utils.dart';
 
@@ -60,5 +61,18 @@ void main() {
         staticTuple.decode(bufferFromHex(staticEncoded), 0).data, staticData);
     expect(dynamicTuple.decode(bufferFromHex(dynamicEncoded), 0).data,
         dynamicData);
+  });
+
+  test('decode overflow crash', () {
+    final tuple = TupleType([parseAbiType('bytes')]);
+    expect(
+        () => tuple.decode(
+            hexToBytes(
+                    '0000000000000000000000004727250679294802377dd6ca6541b8e459077c950000000000000000000000000000000000000000000000000429d069189e0000')
+                .buffer,
+            0), throwsA(predicate((RangeError e) {
+      print('${e.message}');
+      return e.message == 'Value not in range';
+    })));
   });
 }
