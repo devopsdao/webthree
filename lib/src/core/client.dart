@@ -36,6 +36,8 @@ class Web3Client {
 
   final RpcService _jsonRpc;
 
+  RpcService get jsonRpc => _jsonRpc;
+
   /// Some ethereum nodes support an event channel over websockets. Web3dart
   /// will use the [StreamChannel] returned by this function as a socket to send
   /// event requests and parse responses. Can be null, in which case a polling
