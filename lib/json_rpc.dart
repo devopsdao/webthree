@@ -15,6 +15,7 @@ abstract class RpcService {
   /// the data from the server will be returned. If not, an RPCError will be
   /// thrown. Other errors might be thrown if an IO-Error occurs.
   Future<RPCResponse> call(String function, [List<dynamic>? params]);
+  String rpcSeriviceUrl();
 }
 
 class JsonRPC extends RpcService {
@@ -64,6 +65,11 @@ class JsonRPC extends RpcService {
 
     final result = data['result'];
     return RPCResponse(id, result);
+  }
+
+  @override
+  String rpcSeriviceUrl() {
+    return url;
   }
 }
 
