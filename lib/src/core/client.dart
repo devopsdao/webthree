@@ -307,8 +307,11 @@ class Web3Client {
 
     Uint8List signed;
     if (fetchChainIdFromNetworkId) {
-      signed = await signTransaction(cred, transaction,
-          fetchChainIdFromNetworkId: fetchChainIdFromNetworkId,s);
+      signed = await signTransaction(
+        cred,
+        transaction,
+        fetchChainIdFromNetworkId: fetchChainIdFromNetworkId,
+      );
     } else {
       signed = await signTransaction(
         cred,
