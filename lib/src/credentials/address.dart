@@ -9,7 +9,7 @@ import '../crypto/secp256k1.dart';
 
 /// Represents an Ethereum address.
 @immutable
-class EthereumAddress {
+class EthereumAddress implements Comparable<EthereumAddress> {
   static final RegExp _basicAddress =
       RegExp(r'^(0x)?[0-9a-f]{40}', caseSensitive: false);
 
@@ -104,5 +104,11 @@ class EthereumAddress {
   @override
   int get hashCode {
     return hex.hashCode;
+  }
+
+  @override
+  int compareTo(EthereumAddress other) {
+    // TODO: Faster comparison, maybe by words using asUint64List
+    return hexNo0x.compareTo(other.hexNo0x);
   }
 }
