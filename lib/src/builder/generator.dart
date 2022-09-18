@@ -201,6 +201,10 @@ class _ContractGeneration {
         ..name = 'atBlock'
         ..named = true
         ..type = blockNum.rebuild((e) => e.isNullable = true)));
+      b.optionalParameters.add(Parameter((b) => b
+        ..name = 'sender'
+        ..named = true
+        ..type = blockNum.rebuild((e) => e.isNullable = true)));
     } else {
       b.optionalParameters.add(Parameter((b) => b
         ..name = 'transaction'
@@ -260,7 +264,7 @@ class _ContractGeneration {
       b
         ..addExpression(literalList(params).assignFinal('params'))
         ..addExpression(refer('read')
-            .call([argFunction, argParams, refer('atBlock')])
+            .call([argSender, argFunction, argParams, refer('atBlock')])
             .awaited
             .assignFinal('response'))
         ..addExpression(returnValue.returned);

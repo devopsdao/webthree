@@ -78,6 +78,7 @@ final funCall = refer('client.call');
 
 final argCredentials = refer('credentials');
 
+final argSender = refer('sender');
 final argContract = refer('self');
 final argFunction = refer('function');
 final argParams = refer('params');
