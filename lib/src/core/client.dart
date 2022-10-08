@@ -522,6 +522,7 @@ class Web3Client {
   /// response.
   Future<String> callRaw({
     EthereumAddress? sender,
+    EtherAmount? value,
     required EthereumAddress contract,
     required Uint8List data,
     BlockNum? atBlock,
@@ -530,6 +531,7 @@ class Web3Client {
       'to': contract.hex,
       'data': bytesToHex(data, include0x: true, padToEvenLength: true),
       if (sender != null) 'from': sender.hex,
+      if (value != null) 'value': '0x${value.getInWei.toRadixString(16)}',
     };
 
     return _makeRPCCall<String>('eth_call', [call, _getBlockParam(atBlock)]);
