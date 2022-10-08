@@ -49,6 +49,12 @@ class Web3Client {
   ///Whether errors, handled or not, should be printed to the console.
   bool printErrors = false;
 
+  Future<T> makeRPCCall<T>(String function, [List<dynamic>? params]) async {
+    return await _makeRPCCall(function, params);
+  }
+
+  // TODO: Remove
+  @Deprecated('Use the public makeRPCCall')
   Future<T> _makeRPCCall<T>(String function, [List<dynamic>? params]) async {
     try {
       final data = await _jsonRpc.call(function, params);
@@ -183,11 +189,22 @@ class Web3Client {
         .then((s) => hexToInt(s).toInt());
   }
 
+  // TODO: Add getBlockByNumberWithTransactionHashes, then deprecate this.
   Future<BlockInformation> getBlockInformation(
       {String blockNumber = 'latest', bool isContainFullObj = true}) {
     return _makeRPCCall<Map<String, dynamic>>(
             'eth_getBlockByNumber', [blockNumber, isContainFullObj])
         .then((json) => BlockInformation.fromJson(json));
+  }
+
+  Future<BlockInformationWithTransactions> getBlockByNumberWithTransactions(
+    BlockNum blockNum,
+  ) async {
+    final map = await _makeRPCCall<Map<String, dynamic>>(
+      'eth_getBlockByNumber',
+      [blockNum.toBlockParam(), true],
+    );
+    return BlockInformationWithTransactions.fromMap(map);
   }
 
   /// Gets the balance of the account with the specified address.
@@ -235,10 +252,13 @@ class Web3Client {
 
   /// Returns the information about a transaction requested by transaction hash
   /// [transactionHash].
-  Future<TransactionInformation> getTransactionByHash(String transactionHash) {
-    return _makeRPCCall<Map<String, dynamic>>(
-            'eth_getTransactionByHash', [transactionHash])
-        .then((s) => TransactionInformation.fromMap(s));
+  Future<TransactionInformation?> getTransactionByHash(String transactionHash) async {
+    final map = await _makeRPCCall<Map<String, dynamic>?>(
+      'eth_getTransactionByHash',
+      [transactionHash],
+    );
+    if (map == null) return null;
+    return TransactionInformation.fromMap(map);
   }
 
   /// Returns an receipt of a transaction based on its hash.
