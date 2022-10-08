@@ -25,6 +25,7 @@ class Web3Client {
   /// [httpClient] will be used to send requests to the rpc server.
   /// Am isolate will be used to perform expensive operations, such as signing
   /// transactions or computing private keys.
+<<<<<<< HEAD
   Web3Client(String url, Client httpClient, {SocketConnector? socketConnector})
       : this.custom(JsonRPC(url, httpClient), socketConnector: socketConnector);
 
@@ -32,11 +33,28 @@ class Web3Client {
     _filters = _FilterEngine(this);
   }
 
+=======
+  Web3Client(String url, Client httpClient,
+      {this.socketConnector, this.headers})
+      : _jsonRpc = JsonRPC(url, httpClient) {
+    _operations = _ExpensiveOperations();
+    _filters = _FilterEngine(this);
+  }
+
+  Web3Client.custom(RpcService rpc, {this.socketConnector, this.headers})
+      : _jsonRpc = rpc;
+
+>>>>>>> acf917d40535a2f2ae76329f1c09d86d0073431f
   static const BlockNum _defaultBlock = BlockNum.current();
 
   final RpcService _jsonRpc;
 
+<<<<<<< HEAD
   RpcService get jsonRpc => _jsonRpc;
+=======
+  // Optional headers to be passed for every request
+  final Map<String, String>? headers;
+>>>>>>> acf917d40535a2f2ae76329f1c09d86d0073431f
 
   /// Some ethereum nodes support an event channel over websockets. Web3dart
   /// will use the [StreamChannel] returned by this function as a socket to send
@@ -59,7 +77,7 @@ class Web3Client {
   @Deprecated('Use the public makeRPCCall')
   Future<T> _makeRPCCall<T>(String function, [List<dynamic>? params]) async {
     try {
-      final data = await _jsonRpc.call(function, params);
+      final data = await _jsonRpc.call(function, params, headers);
       // ignore: only_throw_errors
       if (data is Error || data is Exception) throw data;
 
