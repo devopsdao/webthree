@@ -57,7 +57,7 @@ class JsonRPC extends RpcService {
       final error = data['error'];
 
       final code = error['code'] as int;
-      final message = error['message'] as String;
+      final message = (error['message'] ?? '') as String;
       final errorData = error['data'];
 
       throw RPCError(code, message, errorData);
