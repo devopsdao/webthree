@@ -1,7 +1,6 @@
 part of 'package:web3dart/web3dart.dart';
 
 class TransactionInformation {
-<<<<<<< HEAD
   TransactionInformation(
       {this.blockHash,
       required this.blockNumber,
@@ -79,25 +78,6 @@ class TransactionInformation {
         r: hexToInt(map['r'] as String),
         s: hexToInt(map['s'] as String));
   }
-=======
-  TransactionInformation.fromMap(Map<String, dynamic> map)
-      : blockHash = map['blockHash'] != null ? map['blockHash'] as String : null,
-        blockNumber = map['blockNumber'] != null
-            ? BlockNum.exact(int.parse(map['blockNumber'] as String))
-            : const BlockNum.pending(),
-        from = EthereumAddress.fromHex(map['from'] as String),
-        gas = int.parse(map['gas'] as String),
-        gasPrice = EtherAmount.inWei(BigInt.parse(map['gasPrice'] as String)),
-        hash = map['hash'] as String,
-        input = hexToBytes(map['input'] as String),
-        nonce = int.parse(map['nonce'] as String),
-        to = map['to'] != null ? EthereumAddress.fromHex(map['to'] as String) : null,
-        transactionIndex = map['transactionIndex'] != null ? int.parse(map['transactionIndex'] as String) : null,
-        value = EtherAmount.inWei(BigInt.parse(map['value'] as String)),
-        v = int.parse(map['v'] as String),
-        r = hexToInt(map['r'] as String),
-        s = hexToInt(map['s'] as String);
->>>>>>> 927b7016b01badabf22a9bdc410a530bf9d545c7
 
   /// The hash of the block containing this transaction. If this transaction has
   /// not been mined yet and is thus in no block, it will be `null`
@@ -152,13 +132,6 @@ class TransactionInformation {
 
   /// The ECDSA full signature used to sign this transaction.
   MsgSignature get signature => MsgSignature(r, s, v);
-
-  @override
-  String toString() {
-    return 'TransactionInformation{ '
-        'transactionIndex: $transactionIndex, blockHash: $blockHash, '
-        'blockNumber: $blockNumber, from: ${from.hex}, to: ${to?.hex} }';
-  }
 }
 
 class TransactionReceipt {
@@ -184,7 +157,6 @@ class TransactionReceipt {
         blockNumber: map['blockNumber'] != null
             ? BlockNum.exact(int.parse(map['blockNumber'] as String))
             : const BlockNum.pending(),
-<<<<<<< HEAD
         from: map['from'] != null
             ? EthereumAddress.fromHex(map['from'] as String)
             : null,
@@ -210,18 +182,6 @@ class TransactionReceipt {
                 .toList()
             : []);
   }
-=======
-        from = map['from'] != null ? EthereumAddress.fromHex(map['from'] as String) : null,
-        to = map['to'] != null ? EthereumAddress.fromHex(map['to'] as String) : null,
-        cumulativeGasUsed = hexToInt(map['cumulativeGasUsed'] as String),
-        gasUsed = map['gasUsed'] != null ? hexToInt(map['gasUsed'] as String) : null,
-        contractAddress =
-            map['contractAddress'] != null ? EthereumAddress.fromHex(map['contractAddress'] as String) : null,
-        status = map['status'] != null ? (hexToDartInt(map['status'] as String) == 1) : null,
-        logs = map['logs'] != null
-            ? (map['logs'] as List<dynamic>).map((log) => FilterEvent.fromMap(log as Map<String, dynamic>)).toList()
-            : [];
->>>>>>> 927b7016b01badabf22a9bdc410a530bf9d545c7
 
   /// Hash of the transaction (32 bytes).
   final Uint8List transactionHash;
