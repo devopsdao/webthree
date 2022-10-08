@@ -58,11 +58,11 @@ void main() {
         );
 
         expect(
-          blockInfo.timestamp.millisecondsSinceEpoch == 1643113026000,
+          blockInfo.timestamp!.millisecondsSinceEpoch == 1643113026000,
           isTrue,
         );
         expect(
-          blockInfo.timestamp.isUtc == true,
+          blockInfo.timestamp!.isUtc == true,
           isTrue,
         );
       });

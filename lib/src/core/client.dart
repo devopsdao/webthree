@@ -293,8 +293,13 @@ class Web3Client {
       'order': order
     };
     return _makeRPCCall<Map<String, dynamic>>(
-            'eth_getTransactionByHash', [transactionHash])
-        .then((s) => TransactionInformation.returnFromTxHash(s));
+        'eth_getTransactionsHistory', [params]).then((response) {
+      final transactions = response['transactions'] as List<dynamic>;
+      return transactions
+          .map((transaction) => TransactionInformation.fromMap(
+              transaction as Map<String, dynamic>))
+          .toList();
+    });
   }
 
   /// Returns an receipt of a transaction based on its hash.
@@ -340,15 +345,15 @@ class Web3Client {
     ).then((history) {
       return history.map((key, dynamic value) {
         if (key == 'baseFeePerGas') {
-          value = value.map((dynamic e) => hexToInt(e)).toList();
+          value = value.map((dynamic e) => hexToInt(e.toString())).toList();
         } else if (key == 'reward') {
           value = value.map(
             (dynamic eList) {
-              return eList.map((dynamic e) => hexToInt(e)).toList();
+              return eList.map((dynamic e) => hexToInt(e.toString())).toList();
             },
           ).toList();
         } else if (key == 'oldestBlock') {
-          value = hexToInt(value);
+          value = hexToInt(value.toString());
         }
         return MapEntry(key, value);
       });
@@ -516,7 +521,7 @@ class Web3Client {
 
     for (int index = 0; index < rates.length; index++) {
       List<BigInt> allPriorityFee = history.map<BigInt>((e) {
-        return e['priorityFeePerGas'][index];
+        return e['priorityFeePerGas'][index] as BigInt;
       }).toList();
       BigInt priorityFee = allPriorityFee.max;
       BigInt estimatedGas = BigInt.from(
