@@ -16,10 +16,7 @@ extension Web3Ext on ByteBuffer {
   Uint8List safeAsUint8List([int offsetInBytes = 0, int? length]) {
     length ??= (lengthInBytes - offsetInBytes) ~/ Uint8List.bytesPerElement;
     _safeRangeCheck(
-      lengthInBytes,
-      offsetInBytes,
-      length * Uint8List.bytesPerElement,
-    );
+        lengthInBytes, offsetInBytes, length * Uint8List.bytesPerElement);
     return asUint8List(offsetInBytes, length);
   }
 }

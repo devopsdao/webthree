@@ -66,18 +66,13 @@ void main() {
   test('decode overflow crash', () {
     final tuple = TupleType([parseAbiType('bytes')]);
     expect(
-      () => tuple.decode(
-        hexToBytes(
-          '0000000000000000000000004727250679294802377dd6ca6541b8e459077c950000000000000000000000000000000000000000000000000429d069189e0000',
-        ).buffer,
-        0,
-      ),
-      throwsA(
-        predicate((RangeError e) {
-          print('${e.message}');
-          return e.message == 'Value not in range';
-        }),
-      ),
-    );
+        () => tuple.decode(
+            hexToBytes(
+                    '0000000000000000000000004727250679294802377dd6ca6541b8e459077c950000000000000000000000000000000000000000000000000429d069189e0000')
+                .buffer,
+            0), throwsA(predicate((RangeError e) {
+      print('${e.message}');
+      return e.message == 'Value not in range';
+    })));
   });
 }
