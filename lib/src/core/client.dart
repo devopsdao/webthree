@@ -53,8 +53,8 @@ class Web3Client {
     return await _makeRPCCall(function, params);
   }
 
-  // TODO: Remove
-  @Deprecated('Use the public makeRPCCall')
+  //// TODO: Remove
+  // @Deprecated('Use the public makeRPCCall')
   Future<T> _makeRPCCall<T>(String function, [List<dynamic>? params]) async {
     try {
       final data = await _jsonRpc.call(function, params);
