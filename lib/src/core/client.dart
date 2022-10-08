@@ -196,7 +196,7 @@ class Web3Client {
       {String blockNumber = 'latest', bool isContainFullObj = true}) {
     return _makeRPCCall<Map<String, dynamic>>(
             'eth_getBlockByNumber', [blockNumber, isContainFullObj])
-        .then((json) => BlockInformation.fromJson(json));
+        .then((Map<String, dynamic> json) => BlockInformation.fromJson(json));
   }
 
   Future<BlockInformationWithTransactions> getBlockByNumberWithTransactions(
@@ -293,15 +293,8 @@ class Web3Client {
       'order': order
     };
     return _makeRPCCall<Map<String, dynamic>>(
-        'eth_getTransactionsHistory', [params]).then((response) {
-      final transactions = response['transactions'] as List<dynamic>;
-      return transactions
-          .map((transaction) => TransactionInformation.fromMap(
-              transaction as Map<String, dynamic>))
-          .toList();
-    });
-
-    //.then((s) => TransactionInformation.fromMap(s));
+            'eth_getTransactionByHash', [transactionHash])
+        .then((s) => TransactionInformation.returnFromTxHash(s));
   }
 
   /// Returns an receipt of a transaction based on its hash.
