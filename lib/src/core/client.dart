@@ -264,6 +264,46 @@ class Web3Client {
     return TransactionInformation.fromMap(map);
   }
 
+  /// Returns the information about a transaction requested by transaction hash
+  Future<List<TransactionInformation>> getPendingTransactions() {
+    return _makeRPCCall<List<dynamic>>('eth_pendingTransactions')
+        .then((transactions) {
+      return transactions
+          .map((transaction) => TransactionInformation.fromMap(
+              transaction as Map<String, dynamic>))
+          .toList();
+    });
+  }
+
+  /// Returns the transactions history for an address
+  /// [transactionHistory].
+  Future<List<TransactionInformation>> getTransactionHistory(
+      EthereumAddress address,
+      {required int pageIndex,
+      required int pageSize,
+      required bool fullTx,
+      required String txType,
+      required String order}) {
+    final params = <String, dynamic>{
+      'address': address.hex,
+      'pageIndex': pageIndex,
+      'pageSize': pageSize,
+      'fullTx': fullTx,
+      'txType': txType,
+      'order': order
+    };
+    return _makeRPCCall<Map<String, dynamic>>(
+        'eth_getTransactionsHistory', [params]).then((response) {
+      final transactions = response['transactions'] as List<dynamic>;
+      return transactions
+          .map((transaction) => TransactionInformation.fromMap(
+              transaction as Map<String, dynamic>))
+          .toList();
+    });
+
+    //.then((s) => TransactionInformation.fromMap(s));
+  }
+
   /// Returns an receipt of a transaction based on its hash.
   Future<TransactionReceipt?> getTransactionReceipt(String hash) {
     return _makeRPCCall<Map<String, dynamic>?>(

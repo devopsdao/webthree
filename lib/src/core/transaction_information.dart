@@ -2,7 +2,7 @@ part of 'package:web3dart/web3dart.dart';
 
 class TransactionInformation {
   TransactionInformation.fromMap(Map<String, dynamic> map)
-      : blockHash = map['blockHash'] as String?,
+      : blockHash = map['blockHash'] != null ? map['blockHash'] as String : '',
         blockNumber = map['blockNumber'] != null
             ? BlockNum.exact(int.parse(map['blockNumber'] as String))
             : const BlockNum.pending(),
@@ -17,6 +17,9 @@ class TransactionInformation {
             : null,
         transactionIndex = map['transactionIndex'] != null
             ? int.parse(map['transactionIndex'] as String)
+            : null,
+        timestamp = map['timestamp'] != null
+            ? int.parse(map['timestamp'] as String)
             : null,
         value = EtherAmount.inWei(BigInt.parse(map['value'] as String)),
         v = int.parse(map['v'] as String),
@@ -60,6 +63,9 @@ class TransactionInformation {
 
   /// The amount of Ether sent with this transaction.
   final EtherAmount value;
+
+  /// The time of the transaction
+  int? timestamp;
 
   /// A cryptographic recovery id which can be used to verify the authenticity
   /// of this transaction together with the signature [r] and [s]

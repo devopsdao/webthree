@@ -326,7 +326,7 @@ class _FilterEngine {
         _registerToPubSub(instantiated, filter.createPubSub());
       } else {
         _registerToAPI(instantiated);
-        _startTicking();
+        //_startTicking();
       }
     };
 
@@ -339,6 +339,7 @@ class _FilterEngine {
     try {
       final response = await _rpc.call(request.method, request.params);
       filter.id = response.result as String;
+      _startTicking();
     } on RPCError catch (e, s) {
       filter._controller.addError(e, s);
       await filter._controller.close();
@@ -372,13 +373,17 @@ class _FilterEngine {
       final filterSnapshot = List.of(_filters);
 
       for (final filter in filterSnapshot) {
-        final updatedData =
-            await _rpc.call('eth_getFilterChanges', [filter.id]);
+        try {
+          final updatedData =
+              await _rpc.call('eth_getFilterChanges', [filter.id]);
 
-        for (final payload in updatedData.result) {
-          if (!filter._controller.isClosed) {
-            _parseAndAdd(filter, payload);
+          for (final payload in updatedData.result) {
+            if (!filter._controller.isClosed) {
+              _parseAndAdd(filter, payload);
+            }
           }
+        } on Exception catch (_) {
+          break;
         }
       }
     } finally {
