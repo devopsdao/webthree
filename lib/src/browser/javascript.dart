@@ -1,5 +1,5 @@
 @JS()
-library web3dart.internal.js;
+library webthree.internal.js;
 
 import 'dart:html';
 
@@ -16,7 +16,7 @@ external Ethereum? get _ethereum;
 extension GetEthereum on Window {
   /// Loads the ethereum instance provided by the browser.
   ///
-  /// For more information on how to use this object with the web3dart package,
+  /// For more information on how to use this object with the webthree package,
   /// see the methods on [DartEthereum].
   Ethereum? get ethereum => _ethereum;
 }

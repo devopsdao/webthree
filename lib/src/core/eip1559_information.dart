@@ -1,4 +1,4 @@
-import 'package:web3dart/src/core/amount.dart';
+import 'package:webthree/src/core/amount.dart';
 
 class EIP1559Information {
   EIP1559Information({

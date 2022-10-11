@@ -1,6 +1,6 @@
 import 'package:http/http.dart';
-import 'package:web3dart/web3dart.dart';
 import 'package:web_socket_channel/io.dart';
+import 'package:webthree/webthree.dart';
 
 import 'token.g.dart';
 
@@ -46,7 +46,7 @@ contract MetaCoin {
 }
 
 The ABI of this contract is available at abi.json
-To generate contract classes, add a dependency on web3dart and build_runner.
+To generate contract classes, add a dependency on webthree and build_runner.
 Running `dart pub run build_runner build` (or `flutter pub ...` if you're using
 Flutter) will generate classes for an .abi.json file.
  */
@@ -61,7 +61,7 @@ Future<void> main() async {
   final credentials = EthPrivateKey.fromHex(privateKey);
   final ownAddress = await credentials.extractAddress();
 
-  // read the contract abi and tell web3dart where it's deployed (contractAddr)
+  // read the contract abi and tell webthree where it's deployed (contractAddr)
   final token = Token(address: contractAddr, client: client);
 
   // listen for the Transfer event when it's emitted by the contract above

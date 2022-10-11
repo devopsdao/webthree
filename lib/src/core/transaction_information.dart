@@ -1,4 +1,4 @@
-part of 'package:web3dart/web3dart.dart';
+part of 'package:webthree/webthree.dart';
 
 class TransactionInformation {
   TransactionInformation(

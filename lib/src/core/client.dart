@@ -1,4 +1,4 @@
-part of 'package:web3dart/web3dart.dart';
+part of 'package:webthree/webthree.dart';
 
 /// Signature for a function that opens a socket on which json-rpc operations
 /// can be performed.
@@ -7,7 +7,7 @@ part of 'package:web3dart/web3dart.dart';
 /// pub is suitable to create websockets. An implementation using that library
 /// could look like this:
 /// ```dart
-/// import "package:web3dart/web3dart.dart";
+/// import "package:webthree/webthree.dart";
 /// import "package:web_socket_channel/io.dart";
 ///
 /// final client = Web3Client(rpcUrl, Client(), socketConnector: () {
@@ -36,7 +36,7 @@ class Web3Client {
 
   final RpcService _jsonRpc;
 
-  /// Some ethereum nodes support an event channel over websockets. Web3dart
+  /// Some ethereum nodes support an event channel over websockets. webthree
   /// will use the [StreamChannel] returned by this function as a socket to send
   /// event requests and parse responses. Can be null, in which case a polling
   /// implementation for events will be used.
@@ -492,14 +492,14 @@ class Web3Client {
   }
 
   Future<Map<String, EIP1559Information>> getGasInEIP1559() async {
-    List<String> rates = ['slow', 'medium', 'fast'];
-    int historicalBlocks = 10;
-    List<Map<String, dynamic>> history = [];
-    Map<String, EIP1559Information> result = {};
+    final List<String> rates = ['slow', 'medium', 'fast'];
+    const int historicalBlocks = 10;
+    final List<Map<String, dynamic>> history = [];
+    final Map<String, EIP1559Information> result = {};
 
-    Map<String, dynamic> feeHistory = await getFeeHistory(
+    final Map<String, dynamic> feeHistory = await getFeeHistory(
       historicalBlocks,
-      atBlock: BlockNum.pending(),
+      atBlock: const BlockNum.pending(),
       rewardPercentiles: [25, 50, 75],
     );
 
@@ -512,20 +512,20 @@ class Web3Client {
       });
     }
 
-    BlockInformation latestBlock = await getBlockInformation(
-      blockNumber: BlockNum.pending().toString(),
+    final BlockInformation latestBlock = await getBlockInformation(
+      blockNumber: const BlockNum.pending().toString(),
     );
-    BigInt baseFee = latestBlock.baseFeePerGas!.getInWei;
+    final BigInt baseFee = latestBlock.baseFeePerGas!.getInWei;
 
     for (int index = 0; index < rates.length; index++) {
-      List<BigInt> allPriorityFee = history.map<BigInt>((e) {
+      final List<BigInt> allPriorityFee = history.map<BigInt>((e) {
         return e['priorityFeePerGas'][index] as BigInt;
       }).toList();
-      BigInt priorityFee = allPriorityFee.max;
-      BigInt estimatedGas = BigInt.from(
+      final BigInt priorityFee = allPriorityFee.max;
+      final BigInt estimatedGas = BigInt.from(
         0.9 * baseFee.toDouble() + priorityFee.toDouble(),
       );
-      BigInt maxFee = BigInt.from(1.5 * estimatedGas.toDouble());
+      final BigInt maxFee = BigInt.from(1.5 * estimatedGas.toDouble());
 
       if (priorityFee >= maxFee || priorityFee <= BigInt.zero) {
         throw Exception('Max fee must exceed the priority fee');
@@ -576,7 +576,7 @@ class Web3Client {
   /// Listens for new blocks that are added to the chain. The stream will emit
   /// the hexadecimal hash of the block after it has been added.
   ///
-  /// {@template web3dart:filter_streams_behavior}
+  /// {@template webthree:filter_streams_behavior}
   /// The stream can only be listened to once. The subscription must be disposed
   /// properly when no longer used. Failing to do so causes a memory leak in
   /// your application and uses unnecessary resources on the connected node.
@@ -592,7 +592,7 @@ class Web3Client {
   /// node. The stream will emit the hexadecimal hash of the pending
   /// transaction.
   ///
-  /// {@macro web3dart:filter_streams_behavior}
+  /// {@macro webthree:filter_streams_behavior}
   /// See also:
   /// - [hexToBytes] and [hexToInt], which can transform hex strings into a byte
   /// or integer representation.
@@ -603,7 +603,7 @@ class Web3Client {
   /// Listens for logs emitted from transactions. The [options] can be used to
   /// apply additional filters.
   ///
-  /// {@macro web3dart:filter_streams_behavior}
+  /// {@macro webthree:filter_streams_behavior}
   /// See also:
   /// - https://solidity.readthedocs.io/en/develop/contracts.html#events, which
   /// explains more about how events are encoded.

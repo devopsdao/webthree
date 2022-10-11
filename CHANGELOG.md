@@ -1,3 +1,48 @@
+## 2.5.0 first WebThree version
+- Renaming library to WebThree in order to maintain a community developed fork.
+- Bumping version number to 2.5.0, pull requests are greatly appreciated. No breaking changes were made.
+- the reason for creating this fork from https://github.com/simulous/web3dart 2.3.5 was that web3dart 2.4.1 currently published at https://pub.dev/packages/web3dart/ Github repo https://github.com/xclud/web3dart has factored out contract generator and metamask integration, making a breaking change.
+The following changes were implemented:
+  - added stubs for dart_wrappers.dart and dart:js, added conditional dependencies import to metamask example in order to support web and other platform builds from a single codebase
+  - fix signPersonalMessage to use modern personal_sign instead of eth_sign
+  - fix type issues in getTransactionHistory
+  - Merged all reasonamble commits from the forks network, thank you @@simolus3 @superkeka @alexeyinkin @xclud @TheGreatAxios @rgplvr @thegamenicorus @MahmoudKhalid @superkeka
+  from @superkeka/web3dart
+  - Make EthereumAddress Comparable
+  - StateMutability error when parsing json abi that contains an event simolus3/web3dart#13
+  - Make getTransactionByHash nullable
+  - Expose number utility functions simolus3/web3dart#3
+  - decodeCall Uses the known types of the function parameters to parse them from the binary call data. The reverse of [encodeCall].
+  - make rpc call public
+  - Add block number to BlockInformation, add BlockInformationWithTransactions, add getBlockByNumberWithTransactions
+  - API Documentation on how to create the wallet files, HD wallets simolus3/web3dart#2
+  - Fix fetching mempool transactions that do not yet have blockHash
+  - Erc20 class support for name, symbol and decimals functions.
+from @GangemiLorenzo/web3dart
+  - add sender to generated contract read
+  - add argSender to generated contracts
+from @kryptogo/web3dart
+  - add toMap for tx receipt
+  - add value for eth_call
+from @thegamenicorus/web3dart
+  - fix filter not found
+  - add getTransactionHistory
+  - keep rpc running
+  - add getPendingTransactions
+from @thelazyindian/web3dart
+  - Accept Null message
+ Fix EIP1559Information
+from @MahmoudKhalid/web3dart
+  - Fix EIP1559Information
+  - Added getGasInEIP1559 method
+  - Added feeHistory method
+from @rgplvr/web3dart
+  fix fetchChainIdFromNetworkId
+from @naiba/web3dart
+  - fix uint8list overflow
+
+## @simulous/web3dart changelog:
+
 ## 2.3.5
 
 - Ensuring quality and performance.

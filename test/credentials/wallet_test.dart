@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:test/test.dart';
-import 'package:web3dart/credentials.dart';
-import 'package:web3dart/crypto.dart';
+import 'package:webthree/credentials.dart';
+import 'package:webthree/crypto.dart';
 
 import 'example_keystores.dart' as data;
 

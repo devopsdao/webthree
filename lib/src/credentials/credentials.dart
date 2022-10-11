@@ -5,7 +5,7 @@ import 'dart:typed_data';
 import 'package:collection/collection.dart';
 import 'package:pointycastle/ecc/api.dart' show ECPoint;
 
-import '../../web3dart.dart' show Transaction;
+import '../../webthree.dart' show Transaction;
 import '../crypto/formatting.dart';
 import '../crypto/keccak.dart';
 import '../crypto/secp256k1.dart';

@@ -3,9 +3,9 @@ import 'dart:typed_data';
 
 import 'package:test/test.dart';
 
-import 'package:web3dart/contracts.dart';
-import 'package:web3dart/credentials.dart';
-import 'package:web3dart/crypto.dart';
+import 'package:webthree/contracts.dart';
+import 'package:webthree/credentials.dart';
+import 'package:webthree/crypto.dart';
 
 import 'data/basic_abi_tests.dart' as basic;
 import 'data/integers.dart' as ints;
@@ -44,7 +44,7 @@ void _runTests(String content) {
 }
 
 /// Maps types from an Ethereum abi test vector to types that are understood by
-/// web3dart:
+/// webthree:
 /// - [int] will be mapped to [BigInt]
 /// - a [String] starting with "0x" to [Uint8List]
 /// - Strings starting with "@" will be interpreted as [EthereumAddress]

@@ -1,37 +1,36 @@
-name: web3dart
-description: Dart library to connect to Ethereum clients. Send transactions and interact with smart contracts!
-version: 2.3.5
-homepage: https://pwa.ir
-repository: https://github.com/xclud/web3dart
+name: webthree
+description: WebThree - a web3 library for dart that allows you to interact with a local or remote ethereum node using HTTP or WebSocket. Suports custom credentials providers like WalletConnect and Metamask.
+version: 2.5.0
+homepage: https://devopsdao.com
+repository: https://github.com/devopsdao/webthree
 
 environment:
   sdk: '>=2.12.0 <3.0.0'
 
 dependencies:
-  # code generation for contracts, shouldn't be imported outside of lib/src/builder/
-  build: ^2.0.0
-  build_config: ^1.0.0
-  dart_style: ^2.0.0
-  code_builder: ^4.0.0
-  path: ^1.8.0
-
-  built_collection: ^5.0.0
-  pointycastle: ^3.4.0
-  convert: ^3.0.0
-  meta: ^1.1.0
-  http: ^0.13.0
-  js: ^0.6.3
-  uuid: ^3.0.1
-  typed_data: ^1.1.6
-  stream_channel: ^2.0.0
-  stream_transform: ^2.0.0
-  json_rpc_2: ^3.0.0
-  collection: ^1.14.11
+  build: ^2.3.1
+  build_config: ^1.1.0
+  built_collection: ^5.1.1
+  code_builder: ^4.3.0
+  collection: ^1.16.0
+  convert: ^3.0.2
+  dart_style: ^2.2.4
+  http: ^0.13.5
+  js: ^0.6.4
+  json_rpc_2: ^3.0.2
+  meta: ^1.8.0
+  path: ^1.8.2
+  pointycastle: ^3.6.2
+  stream_channel: ^2.1.1
+  stream_transform: ^2.0.1
+  typed_data: ^1.3.1
+  universal_html: ^2.0.8
+  uuid: ^3.0.6
 
 dev_dependencies:
-  async: ^2.8.2
-  build_runner: ^2.0.3
-  build_test: ^2.1.0
-  web_socket_channel: ^2.0.0
-  test: ^1.9.0
-  coverage: ^1.1.0
+  async: ^2.9.0
+  build_runner: ^2.2.1
+  build_test: ^2.1.5
+  coverage: ^1.6.1
+  test: ^1.21.6
+  web_socket_channel: ^2.2.0

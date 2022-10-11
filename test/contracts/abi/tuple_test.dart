@@ -1,6 +1,6 @@
 import 'package:test/test.dart';
-import 'package:web3dart/contracts.dart';
-import 'package:web3dart/crypto.dart';
+import 'package:webthree/contracts.dart';
+import 'package:webthree/crypto.dart';
 
 import 'utils.dart';
 
