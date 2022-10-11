@@ -1,3 +1,5 @@
+## 2.5.1
+- update pubspec
 ## 2.5.0 first WebThree version
 - Renaming library to WebThree in order to maintain a community developed fork.
 - Bumping version number to 2.5.0, pull requests are greatly appreciated. No breaking changes were made.
