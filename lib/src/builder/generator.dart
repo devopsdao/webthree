@@ -204,7 +204,7 @@ class _ContractGeneration {
       b.optionalParameters.add(Parameter((b) => b
         ..name = 'sender'
         ..named = true
-        ..type = blockNum.rebuild((e) => e.isNullable = true)));
+        ..type = ethereumAddress.rebuild((e) => e.isNullable = true)));
     } else {
       b.optionalParameters.add(Parameter((b) => b
         ..name = 'transaction'

@@ -1,3 +1,7 @@
+## 2.5.3
+- fixed sender type in contract generator
+## 2.5.2
+- return build.yaml for contract generator
 ## 2.5.1
 - update pubspec
 ## 2.5.0 first WebThree version
