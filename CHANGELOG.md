@@ -1,5 +1,5 @@
 ## 2.5.4
-- added js_util_stub.dart to support javascript object conversion for metamask
+- added js_util_stub.dart to support javascript object conversion for metamask, fixed getFeeHistory, fixed getBlockInformation, changed from solc to solcjs
 ## 2.5.3
 - fixed getGasInEIP1559
 ## 2.5.3
