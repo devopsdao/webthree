@@ -26,7 +26,7 @@ extension DartEthereum on Ethereum {
   ///   final client = Web3Client.custom(eth.asRpcService());
   /// }
   /// ```
-  RpcService asRpcService() => _MetaMaskRpcService(this);
+  RpcService asRpcService() => _MetaMaskRpcService();
 
   /// Sends a raw rpc request using the injected Ethereum client.
   ///
@@ -62,9 +62,9 @@ extension DartEthereum on Ethereum {
 }
 
 class _MetaMaskRpcService extends RpcService {
-  final Ethereum _ethereum;
+  // final Ethereum _ethereum;
 
-  _MetaMaskRpcService(this._ethereum);
+  _MetaMaskRpcService();
 
   @override
   Future<RPCResponse> call(String function, [List? params]) {
