@@ -1,4 +1,7 @@
 ## 2.5.4
+- added hardhat as dev dependency to build export IERC20.abi.json to generate IERC20.g.dart for generator tests
+- fixed integration test and returned token info test
+## 2.5.4
 - added js_util_stub.dart to support javascript object conversion for metamask, fixed getFeeHistory, fixed getBlockInformation, changed from solc to solcjs
 ## 2.5.3
 - fixed getGasInEIP1559
