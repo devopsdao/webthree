@@ -1,1 +1,1 @@
-export '../src/generated/erc20.g.dart';
+export '../src/generated/abi/IERC20.g.dart';
