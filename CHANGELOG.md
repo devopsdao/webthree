@@ -1,3 +1,7 @@
+## 2.5.4
+- added js_util_stub.dart to support javascript object conversion for metamask
+## 2.5.3
+- fixed getGasInEIP1559
 ## 2.5.3
 - fixed sender type in contract generator
 ## 2.5.2

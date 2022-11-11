@@ -51,7 +51,7 @@ class _SolcBuilder implements Builder {
   }
 
   Future<Object?> _solc(Object? input) async {
-    final proc = await Process.start('solc', ['--standard-json']);
+    final proc = await Process.start('solcjs', ['--standard-json']);
     final jsonUtf8 = json.fuse(utf8);
 
     await Stream.value(input).transform(jsonUtf8.encoder).pipe(proc.stdin);

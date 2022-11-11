@@ -94,8 +94,9 @@ class BlockInformation {
         ? EtherAmount.fromUnitAndValue(
             EtherUnit.wei, hexToInt(json['baseFeePerGas'] as String))
         : null;
-    final int? _number =
-        json.containsKey('number') ? json['number'] as int : null;
+    final int? _number = json.containsKey('number')
+        ? hexToInt(json['number'] as String).toInt() as int
+        : null;
     final String? _parentHash =
         json.containsKey('parentHash') ? json['parentHash'] as String : null;
     final String? _receiptsRoot = json.containsKey('receiptsRoot')
@@ -109,8 +110,10 @@ class BlockInformation {
         json.containsKey('size') ? json['size'] as String : null;
     final String? _stateRoot =
         json.containsKey('stateRoot') ? json['size'] as String : null;
-    final DateTime? _timestamp =
-        json.containsKey('timestamp') ? json['timestamp'] as DateTime : null;
+    final DateTime? _timestamp = json.containsKey('timestamp')
+        ? DateTime.fromMillisecondsSinceEpoch(
+            int.parse(json['timestamp'] as String) * 1000)
+        : null;
     final String? _totalDifficulty = json.containsKey('totalDifficulty')
         ? json['totalDifficulty'] as String
         : null;

@@ -51,7 +51,7 @@ class Token extends _i1.GeneratedContract {
   Future<BigInt> getBalanceInEth(
     _i1.EthereumAddress addr, {
     _i1.BlockNum? atBlock,
-    _i1.BlockNum? sender,
+    _i1.EthereumAddress? sender,
   }) async {
     final function = self.abi.functions[2];
     assert(checkSignature(function, '7bd703e8'));
@@ -71,7 +71,7 @@ class Token extends _i1.GeneratedContract {
   Future<BigInt> getBalance(
     _i1.EthereumAddress addr, {
     _i1.BlockNum? atBlock,
-    _i1.BlockNum? sender,
+    _i1.EthereumAddress? sender,
   }) async {
     final function = self.abi.functions[3];
     assert(checkSignature(function, 'f8b2cb4f'));

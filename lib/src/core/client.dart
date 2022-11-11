@@ -336,10 +336,11 @@ class Web3Client {
     List<double>? rewardPercentiles,
   }) {
     final blockParam = _getBlockParam(atBlock);
-
+    final String blockCountHex =
+        bytesToHex([blockCount], include0x: true, padToEvenLength: true);
     return _makeRPCCall<Map<String, dynamic>>(
       'eth_feeHistory',
-      [blockCount, blockParam, rewardPercentiles],
+      [blockCountHex, blockParam, rewardPercentiles],
     ).then((history) {
       return history.map((key, dynamic value) {
         if (key == 'baseFeePerGas') {
@@ -499,7 +500,7 @@ class Web3Client {
 
     final Map<String, dynamic> feeHistory = await getFeeHistory(
       historicalBlocks,
-      atBlock: const BlockNum.pending(),
+      atBlock: const BlockNum.current(),
       rewardPercentiles: [25, 50, 75],
     );
 
@@ -513,7 +514,7 @@ class Web3Client {
     }
 
     final BlockInformation latestBlock = await getBlockInformation(
-      blockNumber: const BlockNum.pending().toString(),
+      blockNumber: const BlockNum.current().toString(),
     );
     final BigInt baseFee = latestBlock.baseFeePerGas!.getInWei;
 
