@@ -197,15 +197,15 @@ class Web3Client {
         .then((Map<String, dynamic> json) => BlockInformation.fromJson(json));
   }
 
-  Future<BlockInformationWithTransactions> getBlockByNumberWithTransactions(
-    BlockNum blockNum,
-  ) async {
-    final map = await _makeRPCCall<Map<String, dynamic>>(
-      'eth_getBlockByNumber',
-      [blockNum.toBlockParam(), true],
-    );
-    return BlockInformationWithTransactions.fromMap(map);
-  }
+  // Future<BlockInformationWithTransactions> getBlockByNumberWithTransactions(
+  //   BlockNum blockNum,
+  // ) async {
+  //   final map = await _makeRPCCall<Map<String, dynamic>>(
+  //     'eth_getBlockByNumber',
+  //     [blockNum.toBlockParam(), true],
+  //   );
+  //   return BlockInformationWithTransactions.fromMap(map);
+  // }
 
   /// Gets the balance of the account with the specified address.
   ///
