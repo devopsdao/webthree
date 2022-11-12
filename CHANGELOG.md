@@ -1,3 +1,7 @@
+## 2.5.5+2
+- fixed linter issues and updated CHANGELOG
+## 2.5.5+1
+- fixed linter issues
 ## 2.5.5
 - added hardhat as dev dependency to build export IERC20.abi.json to generate IERC20.g.dart for generator tests
 - fixed integration test and returned token info test
