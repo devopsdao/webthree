@@ -110,8 +110,7 @@ class NullRejectionException implements Exception {
 
   @override
   String toString() {
-    var value = this.isUndefined ? 'undefined' : 'null';
-    return 'Promise was rejected with a value of `$value`.';
+    throw UnimplementedError();
   }
 }
 
@@ -129,14 +128,10 @@ class NullRejectionException implements Exception {
 /// ```
 external Future<T> promiseToFuture<T>(Object jsPromise);
 
-Object? _getConstructor(String constructorName) =>
-    getProperty(globalThis, constructorName);
-
 /// Like [instanceof] only takes a [String] for the object name instead of a
 /// constructor object.
 bool instanceOfString(Object? element, String objectType) {
-  Object? constructor = _getConstructor(objectType);
-  return constructor != null && instanceof(element, constructor);
+  throw UnimplementedError();
 }
 
 /// Returns the prototype of a given object. Equivalent to

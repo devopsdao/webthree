@@ -1,4 +1,4 @@
-## 2.5.4
+## 2.5.5
 - added hardhat as dev dependency to build export IERC20.abi.json to generate IERC20.g.dart for generator tests
 - fixed integration test and returned token info test
 ## 2.5.4

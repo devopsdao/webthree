@@ -274,7 +274,7 @@ class Web3Client {
   }
 
   /// Returns the transactions history for an address
-  /// [transactionHistory].
+  /// [address].
   Future<List<TransactionInformation>> getTransactionHistory(
       EthereumAddress address,
       {required int pageIndex,

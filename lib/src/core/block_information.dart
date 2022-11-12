@@ -95,7 +95,7 @@ class BlockInformation {
             EtherUnit.wei, hexToInt(json['baseFeePerGas'] as String))
         : null;
     final int? _number = json.containsKey('number')
-        ? hexToInt(json['number'] as String).toInt() as int
+        ? hexToInt(json['number'] as String).toInt()
         : null;
     final String? _parentHash =
         json.containsKey('parentHash') ? json['parentHash'] as String : null;
