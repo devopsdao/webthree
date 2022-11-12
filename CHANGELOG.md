@@ -1,3 +1,7 @@
+## 2.5.5+4
+- removed getBlockByNumberWithTransactions because getBlockInformation already gets all data
+## 2.5.5+3
+- switch to declareFinal instead of deprecated assignFinal in generator.dart
 ## 2.5.5+2
 - fixed linter issues and updated CHANGELOG
 ## 2.5.5+1
