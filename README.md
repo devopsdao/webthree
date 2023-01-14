@@ -19,7 +19,7 @@ Fork of original [web3dart](https://github.com/simolus3/web3dart) 2.3.5 by simol
 - Send signed Ethereum transactions
 - Generate private keys, setup new Ethereum addresses
 - Call functions on smart contracts and listen for contract events
-- Code generation based on smart contract ABI for easier interaction
+- Dart bindings generation based on smart contract ABI for easier interaction
 
 ### TODO
 

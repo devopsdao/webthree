@@ -14,7 +14,7 @@
 ## 2.5.3
 - fixed getGasInEIP1559
 ## 2.5.3
-- fixed sender type in contract generator
+- fixed sender type in solidity contract dart bindings generator
 ## 2.5.2
 - return build.yaml for contract generator
 ## 2.5.1

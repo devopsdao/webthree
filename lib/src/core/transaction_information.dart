@@ -57,7 +57,7 @@ class TransactionInformation {
 
   factory TransactionInformation.fromMap(Map<String, dynamic> map) {
     return TransactionInformation(
-        blockHash: map['blockHash'] as String,
+        blockHash: map['blockHash'] as String?,
         blockNumber: map['blockNumber'] != null
             ? BlockNum.exact(int.parse(map['blockNumber'] as String))
             : const BlockNum.pending(),
