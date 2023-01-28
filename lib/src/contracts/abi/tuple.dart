@@ -80,7 +80,11 @@ class TupleType extends AbiType<List<dynamic>> {
           dynamicHeaderPositions[i], BigInt.from(currentDynamicOffset), buffer);
 
       final lengthBefore = buffer.length;
-      types[i].encode(data[i], buffer);
+      if (data[i] is Map) {
+        types[i].encode(data[i].values.toList(), buffer);
+      } else {
+        types[i].encode(data[i], buffer);
+      }
       currentDynamicOffset += buffer.length - lengthBefore;
     }
   }

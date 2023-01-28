@@ -1,3 +1,9 @@
+## 2.5.6+1
+- fixed merge issue
+## 2.5.6
+- fixed generated contract abi encoder to support dynamic maps in input data, adding support for contracts which have structs as inputs https://docs.soliditylang.org/en/develop/abi-spec.html#formal-specification-of-the-encoding
+## 2.5.5+5
+- fix fetching mempool transactions that do not yet have a blockhash
 ## 2.5.5+4
 - removed getBlockByNumberWithTransactions because getBlockInformation already gets all data
 ## 2.5.5+3
