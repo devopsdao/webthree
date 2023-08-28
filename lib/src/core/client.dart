@@ -194,7 +194,7 @@ class Web3Client {
       {String blockNumber = 'latest', bool isContainFullObj = true}) {
     return _makeRPCCall<Map<String, dynamic>>(
             'eth_getBlockByNumber', [blockNumber, isContainFullObj])
-        .then((Map<String, dynamic> json) => BlockInformation.fromJson(json));
+        .then(BlockInformation.fromJson);
   }
 
   // Future<BlockInformationWithTransactions> getBlockByNumberWithTransactions(

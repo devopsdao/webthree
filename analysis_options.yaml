@@ -1,6 +1,6 @@
 analyzer:
-  strong-mode:
-    implicit-casts: false
+  language:
+    strict-casts: false
   errors:
     unused_element: error
     unused_import: error
@@ -24,14 +24,13 @@ linter:
     - avoid_types_as_parameter_names
     - cancel_subscriptions
     - close_sinks
+    - collection_methods_unrelated_type
     - comment_references
     - control_flow_in_finally
     #    - diagnostic_describe_all_properties (Flutter-specific, not relevant for us)
     - empty_statements
     - hash_and_equals
     #    - invariant_booleans (turned off because the lint rule is buggy)
-    - iterable_contains_unrelated_type
-    - list_remove_unrelated_type
     - literal_only_boolean_expressions
     - no_adjacent_strings_in_list
     - no_duplicate_case_values
@@ -96,7 +95,7 @@ linter:
     #- lines_longer_than_80_chars ignored because it's annoying for long literals in tests
     - non_constant_identifier_names
     - null_closures
-#    - omit_local_variable_types
+    #    - omit_local_variable_types
     - one_member_abstracts
     - only_throw_errors
     - overridden_fields
@@ -115,7 +114,6 @@ linter:
     - prefer_constructors_over_static_methods
     - prefer_contains
     #    - prefer_double_quotes (we prefer single quotes)
-    - prefer_equal_for_default_values
     #    - prefer_expression_function_bodies (for multiline expressions, this is ugly to format)
     - prefer_final_fields
     - prefer_final_in_for_each

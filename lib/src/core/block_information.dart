@@ -59,9 +59,7 @@ class BlockInformation {
         List.castFrom(json['transactions'] as List<dynamic>);
     List<TransactionInformation>? _transactions;
     if (_list != null) {
-      _transactions = _list
-          .map((Map<String, dynamic> e) => TransactionInformation.fromMap(e))
-          .toList();
+      _transactions = _list.map(TransactionInformation.fromMap).toList();
     } else {
       _transactions = null;
     }

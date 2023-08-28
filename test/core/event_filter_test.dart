@@ -84,7 +84,7 @@ void main() {
       expect(method, 'eth_getLogs');
 
       // verify that the topics are sent to eth_getLogs in the correct format
-      final actual = ((params as List)[0])['topics'];
+      final actual = (params as List)[0]['topics'];
       expect(actual, expected);
 
       // return a valid response from eth_getLogs

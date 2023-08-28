@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:js/js.dart';
 import 'package:js/js_util.dart';
 
 import '../../credentials.dart';
@@ -109,7 +108,7 @@ class _EventStream extends Stream<dynamic> {
   }
 }
 
-class _EventStreamSubscription extends StreamSubscription<dynamic> {
+class _EventStreamSubscription implements StreamSubscription<dynamic> {
   final Ethereum _client;
   final String _eventName;
   Function(dynamic)? _onData;
