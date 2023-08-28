@@ -336,8 +336,9 @@ class Web3Client {
     List<double>? rewardPercentiles,
   }) {
     final blockParam = _getBlockParam(atBlock);
-    final String blockCountHex =
-        bytesToHex([blockCount], include0x: true, padToEvenLength: true);
+    final String blockCountHex = '0x${blockCount.toRadixString(16)}';
+    // final String blockCountHex =
+    //     bytesToHex([blockCount], include0x: true, padToEvenLength: true);
     return _makeRPCCall<Map<String, dynamic>>(
       'eth_feeHistory',
       [blockCountHex, blockParam, rewardPercentiles],
@@ -492,9 +493,9 @@ class Web3Client {
     return hexToInt(amountHex);
   }
 
-  Future<Map<String, EIP1559Information>> getGasInEIP1559() async {
+  Future<Map<String, EIP1559Information>> getGasInEIP1559(
+      {int historicalBlocks = 10}) async {
     final List<String> rates = ['slow', 'medium', 'fast'];
-    const int historicalBlocks = 10;
     final List<Map<String, dynamic>> history = [];
     final Map<String, EIP1559Information> result = {};
 
@@ -533,6 +534,7 @@ class Web3Client {
       }
 
       result[rates[index]] = EIP1559Information(
+        lastBaseFeePerGas: EtherAmount.inWei(baseFee),
         maxPriorityFeePerGas: EtherAmount.inWei(priorityFee),
         maxFeePerGas: EtherAmount.inWei(maxFee),
         estimatedGas: estimatedGas,

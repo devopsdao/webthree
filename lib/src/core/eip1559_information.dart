@@ -2,6 +2,7 @@ import 'package:webthree/src/core/amount.dart';
 
 class EIP1559Information {
   EIP1559Information({
+    required this.lastBaseFeePerGas,
     required this.maxPriorityFeePerGas,
     required this.maxFeePerGas,
     required this.estimatedGas,
@@ -9,6 +10,7 @@ class EIP1559Information {
 
   factory EIP1559Information.fromJson(Map<String, String> json) =>
       EIP1559Information(
+        lastBaseFeePerGas: EtherAmount.inWei(BigInt.parse(json['baseFee']!)),
         maxPriorityFeePerGas:
             EtherAmount.inWei(BigInt.parse(json['maxPriorityFeePerGas']!)),
         maxFeePerGas: EtherAmount.inWei(BigInt.parse(json['maxFeePerGas']!)),
@@ -16,11 +18,13 @@ class EIP1559Information {
       );
 
   Map<String, String> toJson() => {
+        'lastBaseFeePerGas': lastBaseFeePerGas.toString(),
         'maxPriorityFeePerGas': maxPriorityFeePerGas.getInWei.toString(),
         'maxFeePerGas': maxFeePerGas.getInWei.toString(),
         'estimatedGas': estimatedGas.toString(),
       };
 
+  final EtherAmount lastBaseFeePerGas;
   final EtherAmount maxPriorityFeePerGas;
   final EtherAmount maxFeePerGas;
   final BigInt estimatedGas;

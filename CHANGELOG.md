@@ -1,3 +1,5 @@
+## 2.5.7+2
+- getGasInEIP1559 to support hardhat, added lastBaseFeePerGas
 ## 2.5.6+1
 - fixed merge issue
 ## 2.5.6
