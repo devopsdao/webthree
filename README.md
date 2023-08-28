@@ -131,7 +131,7 @@ await client.sendTransaction(
     to: EthereumAddress.fromHex('0xC91...3706'),
     gasPrice: EtherAmount.inWei(BigInt.one),
     maxGas: 100000,
-    value: EtherAmount.fromUnitAndValue(EtherUnit.ether, 1),
+    value: EtherAmount.fromInt(EtherUnit.ether, 1),
   ),
 );
 ```

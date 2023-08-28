@@ -83,8 +83,8 @@ Uint8List prependTransactionType(int type, Uint8List transaction) {
     ..setAll(1, transaction);
 }
 
-Future<Uint8List> _signTransaction(
-    Transaction transaction, Credentials c, int? chainId) async {
+Future<Uint8List> signTransactionRaw(Transaction transaction, Credentials c,
+    {int? chainId = 1}) async {
   if (transaction.isEIP1559 && chainId != null) {
     final encodedTx = LengthTrackingByteSink();
     encodedTx.addByte(0x02);
