@@ -1,3 +1,5 @@
+## 2.5.8
+- update dependencies
 ## 2.5.7
 - getGasInEIP1559 to support hardhat, added lastBaseFeePerGas
 ## 2.5.6+1
