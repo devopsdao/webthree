@@ -1,7 +1,7 @@
 import 'dart:convert';
-import 'dart:js_util';
 
 import 'package:webthree/json_rpc.dart';
+import 'package:webthree/src/browser/js_util_stub.dart';
 
 class EthereumUserRejected implements Exception {
   @override
