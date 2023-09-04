@@ -26,7 +26,6 @@ export 'contracts.dart';
 export 'credentials.dart';
 export 'src/core/block_information.dart';
 export 'src/core/block_number.dart';
-export 'src/core/eip1559_information.dart';
 export 'src/core/exception.dart';
 export 'src/core/sync_information.dart';
 
