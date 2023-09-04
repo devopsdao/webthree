@@ -92,5 +92,5 @@ class Transaction {
     );
   }
 
-  bool get isEIP1559 => maxFeePerGas != null && maxPriorityFeePerGas != null;
+  bool get isEIP1559 => maxFeePerGas != null || maxPriorityFeePerGas != null;
 }
