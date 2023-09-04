@@ -116,7 +116,7 @@ class FilterOptions {
   /// All further topics are the encoded values of the indexed parameters of the
   /// event. See https://solidity.readthedocs.io/en/develop/contracts.html#events
   /// for a detailed description.
-  final List<List<String>>? topics;
+  final List<List<String?>>? topics;
 }
 
 /// A log event emitted in a transaction.
@@ -150,7 +150,7 @@ class FilterEvent {
             : null,
         address = EthereumAddress.fromHex(log['address'] as String),
         data = log['data'] as String?,
-        topics = (log['topics'] as List?)?.cast<String>();
+        topics = (log['topics'] as List?)?.cast<String?>();
 
   Map<String, dynamic> toMap() {
     return {
@@ -205,7 +205,7 @@ class FilterEvent {
   /// For solidity events, the first topic is a hash of the event signature
   /// (except for anonymous events). All further topics are the encoded
   /// values of indexed parameters.
-  final List<String>? topics;
+  final List<String?>? topics;
 
   @override
   String toString() {
