@@ -180,7 +180,7 @@ class Web3Client {
   Future<EtherAmount> getGasPrice() async {
     final data = await _makeRPCCall<String>('eth_gasPrice');
 
-    return EtherAmount.fromUnitAndValue(EtherUnit.wei, hexToInt(data));
+    return EtherAmount.fromBigInt(EtherUnit.wei, hexToInt(data));
   }
 
   /// Returns the number of the most recent block on the chain.
@@ -216,7 +216,7 @@ class Web3Client {
 
     return _makeRPCCall<String>('eth_getBalance', [address.hex, blockParam])
         .then((data) {
-      return EtherAmount.fromUnitAndValue(EtherUnit.wei, hexToInt(data));
+      return EtherAmount.fromBigInt(EtherUnit.wei, hexToInt(data));
     });
   }
 
@@ -424,8 +424,9 @@ class Web3Client {
       client: this,
     );
 
-    return _signTransaction(signingInput.transaction, signingInput.credentials,
-        signingInput.chainId);
+    return signTransactionRaw(
+        signingInput.transaction, signingInput.credentials,
+        chainId: signingInput.chainId);
   }
 
   /// Calls a [function] defined in the smart [contract] and returns it's

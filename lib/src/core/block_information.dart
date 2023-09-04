@@ -89,7 +89,7 @@ class BlockInformation {
     final String? _nonce =
         json.containsKey('nonce') ? json['nonce'] as String : null;
     final EtherAmount? _baseFeePerGas = json.containsKey('baseFeePerGas')
-        ? EtherAmount.fromUnitAndValue(
+        ? EtherAmount.fromBigInt(
             EtherUnit.wei, hexToInt(json['baseFeePerGas'] as String))
         : null;
     final int? _number = json.containsKey('number')
@@ -193,7 +193,7 @@ class BlockInformation {
 // EtherAmount? _parseBaseFeePerGas(Map<String, dynamic> map) {
 //   if (!map.containsKey('baseFeePerGas')) return null;
 
-//   return EtherAmount.fromUnitAndValue(
+//   return EtherAmount.fromBigInt(
 //     EtherUnit.wei,
 //     hexToInt(map['baseFeePerGas'] as String),
 //   );

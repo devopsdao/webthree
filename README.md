@@ -48,7 +48,7 @@ Credentials random = EthPrivateKey.createRandom(rng);
 
 // In either way, the library can derive the public key and the address
 // from a private key:
-var address = await credentials.extractAddress();
+var address = credentials.address;
 print(address.hex);
 ```
 
@@ -104,10 +104,11 @@ var apiUrl = "http://localhost:7545"; //Replace with your API
 var httpClient = Client();
 var ethClient = Web3Client(apiUrl, httpClient);
 
-var credentials = ethClient.credentialsFromPrivateKey("0x...");
+var credentials = EthPrivateKey.fromHex("0x...");
+var address = await credentials.address;
 
 // You can now call rpc methods. This one will query the amount of Ether you own
-EtherAmount balance = ethClient.getBalance(credentials.address);
+EtherAmount balance = ethClient.getBalance(address);
 print(balance.getValueInUnit(EtherUnit.ether));
 ```
 
@@ -130,7 +131,7 @@ await client.sendTransaction(
     to: EthereumAddress.fromHex('0xC91...3706'),
     gasPrice: EtherAmount.inWei(BigInt.one),
     maxGas: 100000,
-    value: EtherAmount.fromUnitAndValue(EtherUnit.ether, 1),
+    value: EtherAmount.fromInt(EtherUnit.ether, 1),
   ),
 );
 ```
