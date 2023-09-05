@@ -1,3 +1,14 @@
+## 2.5.9
+- Handle rawRequest errors
+- Report of Web3Dart's PR
+    PR 115 : Report Fix for errors in generated dart bindings
+    PR 114: Feature Addition: EthrDID Constructors
+    PR 108: Implemented calculation of max fee per gas
+    PR 106: add nullable topics in filters
+    PR 86: Eip1559
+    PR 79: Report Replace depreciated field access in ReadMe snippets
+    PR 73: Report JSON-RPC: fix type-error to get useful RPCErrors
+    PR 19: Update readme to remove deprecated method
 ## 2.5.8
 - update dependencies
 ## 2.5.7
