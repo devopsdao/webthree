@@ -1,6 +1,6 @@
 ## 2.5.9
 - Handle rawRequest errors
-- Report of Web3Dart's PR
+- Report of Web3Dart's PRs
     PR 115 : Report Fix for errors in generated dart bindings
     PR 114: Feature Addition: EthrDID Constructors
     PR 108: Implemented calculation of max fee per gas
