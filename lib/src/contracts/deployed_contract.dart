@@ -30,6 +30,19 @@ class DeployedContract {
       functions.where((f) => f.name == name);
 
   /// Finds the external or public function defined by the contract that has the
+  /// provided [name] and the number of params [nbParameters]
+  ContractFunction findFunctionByNameAndNbOfParameters(
+      String name, int nbParameters) {
+    final functionsSelected = functions.where((f) => f.name == name);
+    for (final functionSelected in functionsSelected) {
+      if (functionSelected.parameters.length == nbParameters) {
+        return functionSelected;
+      }
+    }
+    throw Error();
+  }
+
+  /// Finds the external or public function defined by the contract that has the
   /// provided [name].
   ///
   /// If no, or more than one function matches that description, this method

@@ -1,3 +1,7 @@
+## 2.5.10
+- Report of Web3Dart's last commits
+- DeployedContract function method supports more than one function with different parameters
+
 ## 2.5.9
 - Handle rawRequest errors
 - Report of Web3Dart's PRs
