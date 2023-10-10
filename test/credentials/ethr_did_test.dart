@@ -6,9 +6,9 @@ import 'package:webthree/src/credentials/did.dart';
 void main() {
   group('Generate ethr DID', () {
     test('from Ethereum Address', () {
-      var address =
+      final address =
           EthereumAddress.fromHex('0xD1220A0cf47c7B9Be7A2E6BA89F429762e7b9aDb');
-      var ethrDID =
+      final ethrDID =
           EthrDID.fromEthereumAddress(address: address, chainNameOrId: '0x1');
       expect(
         ethrDID.did,
@@ -22,7 +22,7 @@ void main() {
           'a392604efc2fad9c0b3da43b5f698a2e3f270f170d859912be0d54742275c5f6',
         ),
       );
-      var ethrDID =
+      final ethrDID =
           EthrDID.fromPublicKeyEncoded(credentials: key, chainNameOrId: '0x1');
       expect(
         bytesToHex(key.publicKey.getEncoded(), include0x: true),
@@ -35,7 +35,7 @@ void main() {
     });
 
     test('from Identifier', () {
-      var ethrDID = EthrDID.fromIdentifier(
+      final ethrDID = EthrDID.fromIdentifier(
         identifier: 'web3dart',
         chainNameOrId: 'goerli',
       );
