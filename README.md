@@ -229,6 +229,10 @@ analyzer:
 
 See [Customizing static analysis](https://dart.dev/guides/language/analysis-options) for advanced options.
 
+## External code incorporated into WebThree
+
+[Dart Decimals](https://github.com/a14n/dart-decimal) by Alexandre Ardhuin [Apache-2.0 license]
+
 ## Feature requests and bugs
 
 Please file feature requests and bugs at the [issue tracker][tracker].
