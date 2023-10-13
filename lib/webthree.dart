@@ -9,6 +9,7 @@ import 'package:json_rpc_2/json_rpc_2.dart' as rpc;
 import 'package:meta/meta.dart';
 import 'package:stream_channel/stream_channel.dart';
 import 'package:stream_transform/stream_transform.dart';
+import 'package:webthree/src/utils/decimal.dart';
 import 'package:webthree/src/utils/length_tracking_byte_sink.dart';
 
 import 'contracts.dart';

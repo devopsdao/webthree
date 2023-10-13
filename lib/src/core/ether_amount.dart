@@ -49,6 +49,13 @@ class EtherAmount {
     return EtherAmount.inWei(wei);
   }
 
+  /// Constructs an amount of Ether by a unit and its amount.
+  factory EtherAmount.fromDouble(EtherUnit unit, double amount) {
+    final wei = Decimal.parse(_factors[unit]!.toString()) *
+        Decimal.parse(amount.toString());
+    return EtherAmount.inWei(wei.toBigInt());
+  }
+
   /// Gets the value of this amount in the specified unit as a whole number.
   /// **WARNING**: For all units except for [EtherUnit.wei], this method will
   /// discard the remainder occurring in the division, making it unsuitable for

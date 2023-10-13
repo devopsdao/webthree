@@ -1,3 +1,6 @@
+## 2.5.11
+- Add helper for handling amounts with decimals in `EtherAmount` class
+
 ## 2.5.10
 - Report of Web3Dart's last commits
 - DeployedContract function method supports more than one function with different parameters
