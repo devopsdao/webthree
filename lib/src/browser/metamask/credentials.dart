@@ -1,12 +1,12 @@
 @JS()
-library webthree.internal.js.creds;
+library web3dart.internal.js.creds;
 
 import 'dart:typed_data';
 
 import 'package:js/js.dart';
 import 'package:webthree/webthree.dart';
 
-import '../../crypto.dart';
+import '../../../crypto.dart';
 
 import 'dart_wrappers.dart';
 import 'javascript.dart';
@@ -28,7 +28,7 @@ class MetaMaskCredentials extends CredentialsWithKnownAddress
 
   @override
   Future<Uint8List> signPersonalMessage(Uint8List payload, {int? chainId}) {
-    return ethereum.rawRequest('personal_sign', params: [
+    return ethereum.rawRequest('eth_sign', params: [
       address.hex,
       _bytesToData(payload),
     ]).then(_responseToBytes);

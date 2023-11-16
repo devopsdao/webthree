@@ -1,5 +1,5 @@
 @JS()
-library webthree.internal.js;
+library web3dart.internal.js;
 
 import 'dart:html';
 
@@ -8,22 +8,22 @@ import 'package:meta/meta.dart';
 
 import 'dart_wrappers.dart';
 
-@JS('ethereum')
-external Ethereum? get _ethereum;
+@JS('okxwallet')
+external OkxWallet? get _okxWallet;
 
-/// Extension to load obtain the `ethereum` window property injected by
-/// Ethereum browser plugins.
-extension GetEthereum on Window {
+/// Extension to load obtain the `okxwallet` window property injected by
+/// OkxWallet browser plugins.
+extension GetOkxWallet on Window {
   /// Loads the ethereum instance provided by the browser.
   ///
-  /// For more information on how to use this object with the webthree package,
-  /// see the methods on [DartEthereum].
-  Ethereum? get ethereum => _ethereum;
+  /// For more information on how to use this object with the web3dart package,
+  /// see the methods on [DartOkxWallet].
+  // ignore: non_constant_identifier_names
+  OkxWallet? get OkxChainWallet => _okxWallet;
 }
 
 @JS()
-class Ethereum {
-  external bool get isMetaMask;
+class OkxWallet {
   external int get chainId;
   external bool autoRefreshOnNetworkChange;
   external bool isConnected();
