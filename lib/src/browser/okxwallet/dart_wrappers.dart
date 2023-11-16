@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:js/js_util.dart';
+import 'package:webthree/src/core/exception_utils_io.dart';
 
 import '../../../credentials.dart';
 import '../../../json_rpc.dart';
@@ -43,7 +44,9 @@ extension DartOkxWallet on OkxWallet {
     final args = params == null
         ? RequestArguments(method: method)
         : RequestArguments(method: method, params: params);
-    return promiseToFuture(request(args));
+    return promiseToFuture(request(args)).onError((error, stackTrace) {
+      ExceptionUtils.analyzeException(error!);
+    });
   }
 
   /// Asks the user to select an account and give your application access to it.
