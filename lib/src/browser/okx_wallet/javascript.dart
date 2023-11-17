@@ -1,5 +1,5 @@
 @JS()
-library web3dart.internal.js;
+library webthree.internal.js;
 
 import 'dart:html';
 
@@ -12,11 +12,11 @@ import 'dart_wrappers.dart';
 external OkxWallet? get _okxWallet;
 
 /// Extension to load obtain the `okxwallet` window property injected by
-/// OkxWallet browser plugins.
+/// BinanceChain browser plugins.
 extension GetOkxWallet on Window {
   /// Loads the ethereum instance provided by the browser.
   ///
-  /// For more information on how to use this object with the web3dart package,
+  /// For more information on how to use this object with the webthree package,
   /// see the methods on [DartOkxWallet].
   // ignore: non_constant_identifier_names
   OkxWallet? get OkxChainWallet => _okxWallet;

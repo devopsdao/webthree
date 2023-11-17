@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import 'package:js/js_util.dart';
-import 'package:webthree/src/core/exception_utils_io.dart';
+import 'package:webthree/src/core/exception_utils_js.dart'
+    if (dart.library.io) 'package:webthree/src/core/exception_utils_js.dart'
+    if (dart.library.js) 'package:webthree/src/core/exception_utils_js.dart';
 
 import '../../../credentials.dart';
 import '../../../json_rpc.dart';
@@ -21,13 +23,13 @@ extension DartOkxWallet on OkxWallet {
   ///
   /// ```dart
   /// Future<void> main() async {
-  ///   final eth = window.ethereum;
-  ///   if (eth == null) {
-  ///     print('MetaMask is not available');
+  ///   final okx = window.okxwallet;
+  ///   if (okx == null) {
+  ///     print('Okx Wallet is not available');
   ///     return;
   ///   }
   ///
-  ///   final client = Web3Client.custom(eth.asRpcService());
+  ///   final client = Web3Client.custom(okx.asRpcService());
   /// }
   /// ```
   RpcService asRpcService() => _OkxWalletRpcService(this);
@@ -38,9 +40,9 @@ extension DartOkxWallet on OkxWallet {
   /// instead.
   ///
   /// See also:
-  ///  - the rpc documentation under https://docs.metamask.io/guide/rpc-api.html
+  ///  - the rpc documentation under https://www.okx.com/vi/oktc/docs/dev/api/oktc-api/json-rpc-api
   Future<dynamic> rawRequest(String method, {Object? params}) {
-    // No, this can't be simplified. Metamask wants `params` to be undefined.
+    // No, this can't be simplified. Okx Wallet wants `params` to be undefined.
     final args = params == null
         ? RequestArguments(method: method)
         : RequestArguments(method: method, params: params);
@@ -52,7 +54,7 @@ extension DartOkxWallet on OkxWallet {
   /// Asks the user to select an account and give your application access to it.
   Future<CredentialsWithKnownAddress> requestAccount() {
     return rawRequest('eth_requestAccounts').then((res) {
-      return OkxWalletCredentials((res as List).first as String, this);
+      return OkxWalletCredentials((res as List).single as String, this);
     });
   }
 

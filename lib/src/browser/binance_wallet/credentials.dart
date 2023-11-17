@@ -1,5 +1,5 @@
 @JS()
-library web3dart.internal.js.creds;
+library webthree.internal.js.creds;
 
 import 'dart:typed_data';
 
@@ -15,21 +15,20 @@ class BinanceWalletCredentials extends CredentialsWithKnownAddress
     implements CustomTransactionSender {
   @override
   final EthereumAddress address;
-  final BinanceChainWallet binancechain;
+  final BinanceChainWallet bsc;
 
-  BinanceWalletCredentials(String hexAddress, this.binancechain)
+  BinanceWalletCredentials(String hexAddress, this.bsc)
       : address = EthereumAddress.fromHex(hexAddress);
 
   @override
   Future<MsgSignature> signToSignature(Uint8List payload,
       {int? chainId, bool isEIP1559 = false}) {
-    throw UnsupportedError(
-        'Signing raw payloads is not supported on BinanceWallet');
+    throw UnsupportedError('Signing raw payloads is not supported on MetaMask');
   }
 
   @override
   Future<Uint8List> signPersonalMessage(Uint8List payload, {int? chainId}) {
-    return binancechain.rawRequest('eth_sign', params: [
+    return bsc.rawRequest('personal_sign', params: [
       address.hex,
       _bytesToData(payload),
     ]).then(_responseToBytes);
@@ -46,7 +45,7 @@ class BinanceWalletCredentials extends CredentialsWithKnownAddress
       data: _bytesToData(transaction.data),
     );
 
-    return binancechain.rawRequest(
+    return bsc.rawRequest(
       'eth_sendTransaction',
       params: [param],
     ).then((res) => res as String);

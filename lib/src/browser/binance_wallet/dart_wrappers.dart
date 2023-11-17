@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import 'package:js/js_util.dart';
-import 'package:webthree/src/core/exception_utils_io.dart';
+import 'package:webthree/src/core/exception_utils_js.dart'
+    if (dart.library.io) 'package:webthree/src/core/exception_utils_js.dart'
+    if (dart.library.js) 'package:webthree/src/core/exception_utils_js.dart';
 
 import '../../../credentials.dart';
 import '../../../json_rpc.dart';
@@ -21,13 +23,13 @@ extension DartBinanceChain on BinanceChainWallet {
   ///
   /// ```dart
   /// Future<void> main() async {
-  ///   final eth = window.ethereum;
-  ///   if (eth == null) {
-  ///     print('MetaMask is not available');
+  ///   final bsc = window.BinanceChain;
+  ///   if (bsc == null) {
+  ///     print('Binance Wallet is not available');
   ///     return;
   ///   }
   ///
-  ///   final client = Web3Client.custom(eth.asRpcService());
+  ///   final client = Web3Client.custom(bsc.asRpcService());
   /// }
   /// ```
   RpcService asRpcService() => _BinanceWalletRpcService(this);
@@ -38,9 +40,9 @@ extension DartBinanceChain on BinanceChainWallet {
   /// instead.
   ///
   /// See also:
-  ///  - the rpc documentation under https://docs.metamask.io/guide/rpc-api.html
+  ///  - the rpc documentation under https://binance-wallet.gitbook.io/binance-chain-wallet/dev/get-started
   Future<dynamic> rawRequest(String method, {Object? params}) {
-    // No, this can't be simplified. Metamask wants `params` to be undefined.
+    // No, this can't be simplified. Binance Wallet wants `params` to be undefined.
     final args = params == null
         ? RequestArguments(method: method)
         : RequestArguments(method: method, params: params);
@@ -52,7 +54,7 @@ extension DartBinanceChain on BinanceChainWallet {
   /// Asks the user to select an account and give your application access to it.
   Future<CredentialsWithKnownAddress> requestAccount() {
     return rawRequest('eth_requestAccounts').then((res) {
-      return BinanceWalletCredentials((res as List).first as String, this);
+      return BinanceWalletCredentials((res as List).single as String, this);
     });
   }
 

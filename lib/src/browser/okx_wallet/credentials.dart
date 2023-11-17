@@ -1,5 +1,5 @@
 @JS()
-library web3dart.internal.js.creds;
+library webthree.internal.js.creds;
 
 import 'dart:typed_data';
 
@@ -15,21 +15,20 @@ class OkxWalletCredentials extends CredentialsWithKnownAddress
     implements CustomTransactionSender {
   @override
   final EthereumAddress address;
-  final OkxWallet okxWallet;
+  final OkxWallet okx;
 
-  OkxWalletCredentials(String hexAddress, this.okxWallet)
+  OkxWalletCredentials(String hexAddress, this.okx)
       : address = EthereumAddress.fromHex(hexAddress);
 
   @override
   Future<MsgSignature> signToSignature(Uint8List payload,
       {int? chainId, bool isEIP1559 = false}) {
-    throw UnsupportedError(
-        'Signing raw payloads is not supported on OkxWallet');
+    throw UnsupportedError('Signing raw payloads is not supported on MetaMask');
   }
 
   @override
   Future<Uint8List> signPersonalMessage(Uint8List payload, {int? chainId}) {
-    return okxWallet.rawRequest('eth_sign', params: [
+    return okx.rawRequest('personal_sign', params: [
       address.hex,
       _bytesToData(payload),
     ]).then(_responseToBytes);
@@ -46,7 +45,7 @@ class OkxWalletCredentials extends CredentialsWithKnownAddress
       data: _bytesToData(transaction.data),
     );
 
-    return okxWallet.rawRequest(
+    return okx.rawRequest(
       'eth_sendTransaction',
       params: [param],
     ).then((res) => res as String);
