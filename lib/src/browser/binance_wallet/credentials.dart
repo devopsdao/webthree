@@ -28,7 +28,7 @@ class BinanceWalletCredentials extends CredentialsWithKnownAddress
 
   @override
   Future<Uint8List> signPersonalMessage(Uint8List payload, {int? chainId}) {
-    return bsc.rawRequest('personal_sign', params: [
+    return bsc.rawRequest('eth_sign', params: [
       address.hex,
       _bytesToData(payload),
     ]).then(_responseToBytes);
