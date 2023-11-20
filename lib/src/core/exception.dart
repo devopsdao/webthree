@@ -24,3 +24,12 @@ class EthersException implements Exception {
   @override
   String toString() => 'EthersException: $code $reason';
 }
+
+class BinanceWalletException implements Exception {
+  final String error;
+
+  BinanceWalletException(this.error);
+
+  @override
+  String toString() => 'BinanceWalletException: $error';
+}
