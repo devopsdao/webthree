@@ -36,6 +36,8 @@ class ExceptionUtils {
               rpcErrorJson['data']['message'] ?? '',
               rpcErrorJson['data']['data'] ?? '',
             );
+          case -32601:
+            throw EthereumChainSwitchNotSupported();
           default:
             if (err['message'] != null) {
               throw EthereumException(
