@@ -55,6 +55,12 @@ class ExceptionUtils {
         }
       }
       if (err['error'] != null) {
+        if (err['error']
+            .toString()
+            .toLowerCase()
+            .contains('rejected by user')) {
+          throw EthereumUserRejected();
+        }
         throw BinanceWalletException(
           err['error'],
         );
