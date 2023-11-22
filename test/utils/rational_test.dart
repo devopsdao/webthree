@@ -13,8 +13,8 @@
 // limitations under the License.
 
 import 'package:expector/expector.dart';
-import 'package:webthree/src/utils/rational.dart';
 import 'package:test/test.dart' show test;
+import 'package:webthree/src/utils/rational.dart';
 
 Rational p(String value) => Rational.parse(value);
 
@@ -220,7 +220,7 @@ void main() {
   test('toDouble()', () {
     expectThat(p('2.51').toDouble()).equals(2.51);
     expectThat(p('-2.51').toDouble()).equals(-2.51);
-    expectThat(p('-2').toDouble()).equals(-2.0);
+    expectThat(p('-2').toDouble()).equals(-2);
   });
   test('pow', () {
     expectThat(p('100').pow(0)).equals(p('1'));

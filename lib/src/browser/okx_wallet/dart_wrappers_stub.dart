@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:universal_html/html.dart';
 import 'package:webthree/json_rpc.dart';
 
-extension GetEthereum on Window {
+extension GetOkx on Window {
   /// Loads the ethereum instance provided by the browser.
   ///
   /// For more information on how to use this object with the webthree package,

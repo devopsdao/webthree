@@ -1,9 +1,16 @@
+## 2.6.2
+- Fix imports
+
+## 2.6.1
+- Fix stub includes
+
 ## 2.6.0
 - Add Binance Wallet and Okx Wallet support (from MacaronSwap repo)
 - Added addChain and switchChain functions to example
+- switched to stream_channel: ^2.1.1 to support stable flutter channel
 
 ## 2.5.11
-- Add helper for handling amounts with decimals in `EtherAmount` class with the help of classes from [Decimal](https://github.com/a14n/dart-decimal) and [Rational](https://github.com/a14n/dart-decimal) by Alexandre Ardhuin
+- Add helper for handling amounts with decimals in `EtherAmount` class
 
 ## 2.5.10
 - Report of Web3Dart's last commits
@@ -45,7 +52,6 @@
 - added js_util_stub.dart to support javascript object conversion for metamask, fixed getFeeHistory, fixed getBlockInformation, changed from solc to solcjs
 ## 2.5.3
 - fixed getGasInEIP1559
-## 2.5.3
 - fixed sender type in solidity contract dart bindings generator
 ## 2.5.2
 - return build.yaml for contract generator
@@ -181,9 +187,7 @@ from @naiba/web3dart
 ## 1.2.0
 
 - Added `estimateGas` method on `Web3Client` to estimate the amount of gas that
-  would be used by a transaction.
-  
-In 1.2.1, the `atBlock` parameter on `estimateGas` was deprecated and will be ignored.
+  would be used by a transaction. In 1.2.1, the `atBlock` parameter on `estimateGas` was deprecated and will be ignored.
 
 ## 1.1.1, 1.1.1+1
 
@@ -215,7 +219,7 @@ This version contains breaking changes! Here is an overview listing some of them
 | :----------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------: |
 | Creating credentials via `Credentials.fromPrivateKeyHex`                                               |                                 Use the `EthPrivateKey` class or, even better, `client.credentialsFromPrivateKey` |
 | Sending transactions or calling contract functions                                                     | The api has been changed to just a single methods instead of a transaction builder. See the examples for details. |
-| Low-level cryptographic operations like signing, hashing and converting hex <-> byte array <-> integer |                                  Not available in the core library. Import `package:web3dart/crypto.dart` instead |
+| Low-level cryptographic operations like signing, hashing and converting hex - byte array - integer |                                  Not available in the core library. Import `package:web3dart/crypto.dart` instead |
 
 If you run into problems after updating, please [create an issue](https://github.com/simolus3/web3dart/issues/new).
 
