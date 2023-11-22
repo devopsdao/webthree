@@ -100,7 +100,7 @@ Future<void> metamask() async {
   print('Using ${credentials.address}');
   print('Client is listening: ${await client.isListeningForNetwork()}');
 
-  final message = Uint8List.fromList(utf8.encode('Hello from web3dart'));
+  final message = Uint8List.fromList(utf8.encode('Hello from webthree'));
   final signature = await credentials.signPersonalMessage(message);
   print('Signature: ${base64.encode(signature)}');
   await addChain(eth);
@@ -119,7 +119,7 @@ Future<void> binanceChainWallet() async {
   print('Using ${credentials.address}');
   print('Client is listening: ${await client.isListeningForNetwork()}');
 
-  final message = Uint8List.fromList(utf8.encode('Hello from web3dart'));
+  final message = Uint8List.fromList(utf8.encode('Hello from webthree'));
   final signature = await credentials.signPersonalMessage(message);
   print('Signature: ${base64.encode(signature)}');
   await addChain(bsc);
@@ -138,7 +138,7 @@ Future<void> okxWallet() async {
   print('Using ${credentials.address}');
   print('Client is listening: ${await client.isListeningForNetwork()}');
 
-  final message = Uint8List.fromList(utf8.encode('Hello from web3dart'));
+  final message = Uint8List.fromList(utf8.encode('Hello from webthree'));
   final signature = await credentials.signPersonalMessage(message);
   print('Signature: ${base64.encode(signature)}');
   await addChain(okx);
