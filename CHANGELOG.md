@@ -1,5 +1,5 @@
 ## 2.5.11
-- Add helper for handling amounts with decimals in `EtherAmount` class
+- Add helper for handling amounts with decimals in `EtherAmount` class with the help of classes from [Decimal](https://github.com/a14n/dart-decimal) and [Rational](https://github.com/a14n/dart-decimal) by Alexandre Ardhuin
 
 ## 2.5.10
 - Report of Web3Dart's last commits
