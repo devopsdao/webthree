@@ -1,3 +1,7 @@
+## 2.6.0
+- Add Binance Wallet and Okx Wallet support (from MacaronSwap repo)
+- Added addChain and switchChain functions to example
+
 ## 2.5.11
 - Add helper for handling amounts with decimals in `EtherAmount` class with the help of classes from [Decimal](https://github.com/a14n/dart-decimal) and [Rational](https://github.com/a14n/dart-decimal) by Alexandre Ardhuin
 

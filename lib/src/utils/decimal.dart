@@ -123,7 +123,7 @@ class Decimal implements Comparable<Decimal> {
 
   /// Return the remainder from dividing this [Decimal] by [other].
   Decimal remainder(Decimal other) =>
-      (_rational.remainder(other._rational)).toDecimal();
+      _rational.remainder(other._rational).toDecimal();
 
   /// Whether this number is numerically smaller than [other].
   bool operator <(Decimal other) => _rational < other._rational;

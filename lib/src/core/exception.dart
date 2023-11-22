@@ -3,6 +3,12 @@ class EthereumUserRejected implements Exception {
   String toString() => 'EthereumUserRejected: User rejected the request';
 }
 
+class EthereumChainSwitchNotSupported implements Exception {
+  @override
+  String toString() =>
+      'EthereumChainSwitchNotSupported: User rejected the request';
+}
+
 class EthereumException implements Exception {
   final int code;
   final String message;
@@ -23,4 +29,13 @@ class EthersException implements Exception {
 
   @override
   String toString() => 'EthersException: $code $reason';
+}
+
+class BinanceWalletException implements Exception {
+  final String error;
+
+  BinanceWalletException(this.error);
+
+  @override
+  String toString() => 'BinanceWalletException: $error';
 }
