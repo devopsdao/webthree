@@ -21,6 +21,10 @@ class JSrawRequestParams {
 }
 
 Future<void> main() async {
+  await metamask();
+}
+
+Future<void> metamask() async {
   final eth = window.ethereum;
   if (eth == null) {
     print('MetaMask is not available');
@@ -42,4 +46,44 @@ Future<void> main() async {
   final String chainIDHex = await eth.rawRequest('eth_chainId') as String;
   final chainID = int.parse(chainIDHex);
   print('chainID: $chainID');
+}
+
+Future<void> binanceChainWallet() async {
+  final bsc = window.BinanceChain;
+  if (bsc == null) {
+    print('BinanceWallet is not available');
+    return;
+  }
+
+  final client = Web3Client.custom(bsc.asRpcService());
+  final credentials = await bsc.requestAccount();
+
+  print('Using ${credentials.address}');
+  print('Client is listening: ${await client.isListeningForNetwork()}');
+
+  final message = Uint8List.fromList(utf8.encode('Hello from webthree'));
+  final signature = await credentials.signPersonalMessage(message);
+  print('Signature: ${base64.encode(signature)}');
+
+  // wallet_switchEthereumChain not available with this wallet
+}
+
+Future<void> okxWallet() async {
+  final okx = window.OkxChainWallet;
+  if (okx == null) {
+    print('OkxChainWallet is not available');
+    return;
+  }
+
+  final client = Web3Client.custom(okx.asRpcService());
+  final credentials = await okx.requestAccount();
+
+  print('Using ${credentials.address}');
+  print('Client is listening: ${await client.isListeningForNetwork()}');
+
+  final message = Uint8List.fromList(utf8.encode('Hello from webthree'));
+  final signature = await credentials.signPersonalMessage(message);
+  print('Signature: ${base64.encode(signature)}');
+
+  // wallet_switchEthereumChain not available with this wallet
 }

@@ -6,18 +6,18 @@ import 'dart:typed_data';
 import 'package:js/js.dart';
 import 'package:webthree/webthree.dart';
 
-import '../../crypto.dart';
+import '../../../crypto.dart';
 
 import 'dart_wrappers.dart';
 import 'javascript.dart';
 
-class MetaMaskCredentials extends CredentialsWithKnownAddress
+class BinanceWalletCredentials extends CredentialsWithKnownAddress
     implements CustomTransactionSender {
   @override
   final EthereumAddress address;
-  final Ethereum ethereum;
+  final BinanceChainWallet bsc;
 
-  MetaMaskCredentials(String hexAddress, this.ethereum)
+  BinanceWalletCredentials(String hexAddress, this.bsc)
       : address = EthereumAddress.fromHex(hexAddress);
 
   @override
@@ -28,7 +28,7 @@ class MetaMaskCredentials extends CredentialsWithKnownAddress
 
   @override
   Future<Uint8List> signPersonalMessage(Uint8List payload, {int? chainId}) {
-    return ethereum.rawRequest('personal_sign', params: [
+    return bsc.rawRequest('eth_sign', params: [
       address.hex,
       _bytesToData(payload),
     ]).then(_responseToBytes);
@@ -45,7 +45,7 @@ class MetaMaskCredentials extends CredentialsWithKnownAddress
       data: _bytesToData(transaction.data),
     );
 
-    return ethereum.rawRequest(
+    return bsc.rawRequest(
       'eth_sendTransaction',
       params: [param],
     ).then((res) => res as String);

@@ -104,7 +104,7 @@ class Rational implements Comparable<Rational> {
       numerator = BigInt.parse(group1!);
     }
     if (group3 != null) {
-      var exponent = int.parse(group3.substring(1));
+      final exponent = int.parse(group3.substring(1));
       if (exponent > 0) {
         numerator *= _i10.pow(exponent);
       }

@@ -5,34 +5,34 @@ import 'package:webthree/src/core/exception_utils_js.dart'
     if (dart.library.io) 'package:webthree/src/core/exception_utils_js.dart'
     if (dart.library.js) 'package:webthree/src/core/exception_utils_js.dart';
 
-import '../../credentials.dart';
-import '../../json_rpc.dart';
+import '../../../credentials.dart';
+import '../../../json_rpc.dart';
 import 'credentials.dart';
 import 'javascript.dart';
 
-/// This extension provides Dart methods around the raw [Ethereum] JavaScript
+/// This extension provides Dart methods around the raw [DartBinanceChain] JavaScript
 /// object.
 ///
 /// Extensions include [request] to turn request promises into Dart futures or
 /// [on] to turn JavaScript event handlers into convenient Dart streams.
 /// To use the raw ethereum client in a high-level `Web3Client`, use
 /// [asRpcService].
-extension DartEthereum on Ethereum {
+extension DartBinanceChain on BinanceChainWallet {
   /// Turns this raw client into an rpc client that can be used to create a
   /// `Web3Client`:
   ///
   /// ```dart
   /// Future<void> main() async {
-  ///   final eth = window.ethereum;
-  ///   if (eth == null) {
-  ///     print('MetaMask is not available');
+  ///   final bsc = window.BinanceChain;
+  ///   if (bsc == null) {
+  ///     print('Binance Wallet is not available');
   ///     return;
   ///   }
   ///
-  ///   final client = Web3Client.custom(eth.asRpcService());
+  ///   final client = Web3Client.custom(bsc.asRpcService());
   /// }
   /// ```
-  RpcService asRpcService() => _MetaMaskRpcService(this);
+  RpcService asRpcService() => _BinanceWalletRpcService(this);
 
   /// Sends a raw rpc request using the injected Ethereum client.
   ///
@@ -40,9 +40,9 @@ extension DartEthereum on Ethereum {
   /// instead.
   ///
   /// See also:
-  ///  - the rpc documentation under https://docs.metamask.io/guide/rpc-api.html
+  ///  - the rpc documentation under https://binance-wallet.gitbook.io/binance-chain-wallet/dev/get-started
   Future<dynamic> rawRequest(String method, {Object? params}) {
-    // No, this can't be simplified. Metamask wants `params` to be undefined.
+    // No, this can't be simplified. Binance Wallet wants `params` to be undefined.
     final args = params == null
         ? RequestArguments(method: method)
         : RequestArguments(method: method, params: params);
@@ -54,7 +54,7 @@ extension DartEthereum on Ethereum {
   /// Asks the user to select an account and give your application access to it.
   Future<CredentialsWithKnownAddress> requestAccount() {
     return rawRequest('eth_requestAccounts').then((res) {
-      return MetaMaskCredentials((res as List).single as String, this);
+      return BinanceWalletCredentials((res as List).single as String, this);
     });
   }
 
@@ -74,21 +74,21 @@ extension DartEthereum on Ethereum {
   Stream<int> get chainChanged => stream('chainChanged').cast();
 }
 
-class _MetaMaskRpcService extends RpcService {
-  final Ethereum _ethereum;
+class _BinanceWalletRpcService extends RpcService {
+  final BinanceChainWallet _binancechain;
 
-  _MetaMaskRpcService(this._ethereum);
+  _BinanceWalletRpcService(this._binancechain);
 
   @override
   Future<RPCResponse> call(String function, [List? params]) {
-    return _ethereum.rawRequest(function, params: params).then((res) {
+    return _binancechain.rawRequest(function, params: params).then((res) {
       return RPCResponse(0, res);
     });
   }
 }
 
 class _EventStream extends Stream<dynamic> {
-  final Ethereum _client;
+  final BinanceChainWallet _client;
   final String _eventName;
 
   _EventStream(this._client, this._eventName);
@@ -114,7 +114,7 @@ class _EventStream extends Stream<dynamic> {
 }
 
 class _EventStreamSubscription implements StreamSubscription<dynamic> {
-  final Ethereum _client;
+  final BinanceChainWallet _client;
   final String _eventName;
   Function(dynamic)? _onData;
 
