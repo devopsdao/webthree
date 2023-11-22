@@ -93,6 +93,7 @@ Future<void> metamask() async {
     print('MetaMask is not available');
     return;
   }
+  await switchChain();
 
   final client = Web3Client.custom(eth.asRpcService());
   final credentials = await eth.requestAccount();
@@ -103,7 +104,8 @@ Future<void> metamask() async {
   final message = Uint8List.fromList(utf8.encode('Hello from webthree'));
   final signature = await credentials.signPersonalMessage(message);
   print('Signature: ${base64.encode(signature)}');
-  await addChain(eth);
+
+  print('ok');
 }
 
 Future<void> binanceChainWallet() async {
@@ -122,7 +124,7 @@ Future<void> binanceChainWallet() async {
   final message = Uint8List.fromList(utf8.encode('Hello from webthree'));
   final signature = await credentials.signPersonalMessage(message);
   print('Signature: ${base64.encode(signature)}');
-  await addChain(bsc);
+  await switchChain();
 }
 
 Future<void> okxWallet() async {
@@ -141,10 +143,12 @@ Future<void> okxWallet() async {
   final message = Uint8List.fromList(utf8.encode('Hello from webthree'));
   final signature = await credentials.signPersonalMessage(message);
   print('Signature: ${base64.encode(signature)}');
-  await addChain(okx);
+  await switchChain();
 }
 
-Future<void> addChain(eth) async {
+Future<void> addChain() async {
+  //must assign eth object in function, otherwise rawRequest is not available
+  final eth = window.ethereum;
   final params = <String, dynamic>{
     'chainId': '0x855456',
     'chainName': 'Dodao',
@@ -159,28 +163,28 @@ Future<void> addChain(eth) async {
     ],
     'iconUrls': [''],
   };
-  await eth
+  await eth!
       .rawRequest('wallet_addEthereumChain', params: [mapToJsObject(params)]);
 }
 
-Future<void> switchChain(web3client, eth) async {
+Future<void> switchChain() async {
+  //must assign eth object in function, otherwise rawRequest is not available
+  final eth = window.ethereum;
   try {
-    // chainIdHex = await eth.rawRequest('eth_chainId');
-    final chainIdHex = await web3client.makeRPCCall('eth_chainId');
+    final chainIdHex = await eth!.rawRequest('eth_chainId');
     print('current chain id $chainIdHex');
-  } on Exception catch (e) {
-    print('user rejected $e');
+  } on EthereumException catch (e) {
+    print('user rejected ${e.message}');
   }
 
   try {
-    await eth.rawRequest('wallet_switchEthereumChain',
-        params: [JSrawRequestSwitchChainParams(chainId: '0x855456')]);
-  } on Exception catch (e) {
-    final error = jsObjectToMap(e);
-    if (error['code'] == 4902) {
-      await addChain(eth);
+    await eth!.rawRequest('wallet_switchEthereumChain',
+        params: [JSrawRequestSwitchChainParams(chainId: '0x507')]);
+  } on EthereumException catch (e) {
+    if (e.code == 4902) {
+      await addChain();
     } else {
-      print('user rejected $error');
+      print('user rejected ${e.message}');
     }
   }
 }

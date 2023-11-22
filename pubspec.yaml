@@ -3,7 +3,7 @@ description: WebThree - a web3 library for dart for interaction with ethereum
   nodes using HTTP or WebSocket. Supports custom credentials providers like
   WalletConnect and Metamask.
 version: 2.6.2
-homepage: https://devopsdao.com
+homepage: https://docs.dodao.dev
 repository: https://github.com/devopsdao/webthree
 
 environment:
