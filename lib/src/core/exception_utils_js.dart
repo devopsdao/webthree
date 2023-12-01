@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:js/js_util.dart';
-import 'package:webthree/json_rpc.dart';
 import 'package:webthree/src/core/exception.dart';
 
 class ExceptionUtils {
@@ -12,9 +11,12 @@ class ExceptionUtils {
     // Case of Trust Wallet for example...
     if (e.runtimeType.toString() == 'NativeError') {
       if (e.toString().toLowerCase().contains('user rejected the request')) {
-        throw EthereumUserRejected();
+        throw WebThreeRPCError(4001, e.toString(), '');
+      }
+      if (e.toString().toLowerCase().contains('unrecognized chain id')) {
+        throw WebThreeRPCError(4902, e.toString(), '');
       } else {
-        throw UnimplementedError(e.toString());
+        throw WebThreeRPCError(9991, e.toString(), '');
       }
     } else {
       final err = json.decode(json.encode(dartify(e))) as Map<String, dynamic>;
@@ -22,22 +24,20 @@ class ExceptionUtils {
         // Case of Metamask...
         switch (err['code']) {
           case 4001:
-            throw EthereumUserRejected();
+            throw EthereumUserRejected(err['code'], err['message'], err['stack']);
           case -32603:
-            String rpcErrorData = err['message'].toString().replaceFirst(
-                "[ethjs-query] while formatting outputs from RPC '{\"value\":",
-                '');
+            String rpcErrorData = err['message'].toString().replaceFirst("[ethjs-query] while formatting outputs from RPC '{\"value\":", '');
             if (rpcErrorData.length - 2 > 0) {
               rpcErrorData = rpcErrorData.substring(0, rpcErrorData.length - 2);
             }
             final rpcErrorJson = json.decode(rpcErrorData);
-            throw RPCError(
+            throw WebThreeRPCError(
               rpcErrorJson['data']['code'] ?? '',
               rpcErrorJson['data']['message'] ?? '',
               rpcErrorJson['data']['data'] ?? '',
             );
           case -32601:
-            throw EthereumChainSwitchNotSupported();
+            throw EthereumChainSwitchNotSupported(err['code'], err['message'], err['stack']);
           default:
             if (err['message'] != null) {
               throw EthereumException(
@@ -52,16 +52,13 @@ class ExceptionUtils {
                 err,
               );
             } else {
-              throw UnimplementedError(e.toString());
+              throw WebThreeRPCError(err['code'], err['message'], err['data']);
             }
         }
       }
       if (err['error'] != null) {
-        if (err['error']
-            .toString()
-            .toLowerCase()
-            .contains('rejected by user')) {
-          throw EthereumUserRejected();
+        if (err['error'].toString().toLowerCase().contains('rejected by user')) {
+          throw EthereumUserRejected(err['code'], err['message'], err['stack']);
         }
         throw BinanceWalletException(
           err['error'],

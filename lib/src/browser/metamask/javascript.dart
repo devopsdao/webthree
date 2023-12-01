@@ -24,6 +24,7 @@ extension GetEthereum on Window {
 @JS()
 class Ethereum {
   external bool get isMetaMask;
+  external bool get isTrust;
   external int get chainId;
   external bool autoRefreshOnNetworkChange;
   external bool isConnected();

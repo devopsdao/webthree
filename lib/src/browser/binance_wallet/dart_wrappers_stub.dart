@@ -12,6 +12,11 @@ extension GetBinanceChain on Window {
 }
 
 extension DartBinanceChain on BinanceChainWallet {
+  external bool get isMetaMask;
+  external bool get isTrust;
+  external int get chainId;
+  external bool autoRefreshOnNetworkChange;
+
   /// Turns this raw client into an rpc client that can be used to create a
   /// `Web3Client`:
   ///

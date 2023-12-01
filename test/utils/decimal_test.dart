@@ -275,7 +275,7 @@ void main() {
   test('toDouble()', () {
     expectThat(dec('2.51').toDouble()).equals(2.51);
     expectThat(dec('-2.51').toDouble()).equals(-2.51);
-    expectThat(dec('-2').toDouble()).equals(-2.0);
+    expectThat(dec('-2').toDouble()).equals(-2);
   });
   test('precision', () {
     expectThat(dec('100').precision).equals(3);

@@ -12,6 +12,11 @@ extension GetEthereum on Window {
 }
 
 extension DartEthereum on Ethereum {
+  external bool get isMetaMask;
+  external bool get isTrust;
+  external int get chainId;
+  external bool autoRefreshOnNetworkChange;
+
   /// Turns this raw client into an rpc client that can be used to create a
   /// `Web3Client`:
   ///
@@ -26,6 +31,7 @@ extension DartEthereum on Ethereum {
   ///   final client = Web3Client.custom(eth.asRpcService());
   /// }
   /// ```
+  ///
   RpcService asRpcService() => _MetaMaskRpcService();
 
   /// Sends a raw rpc request using the injected Ethereum client.

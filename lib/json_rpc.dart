@@ -4,6 +4,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:http/http.dart';
+import 'src/core/exception.dart';
 
 // ignore: one_member_abstracts
 abstract class RpcService {
@@ -58,7 +59,7 @@ class JsonRPC extends RpcService {
       final message = (error['message'] ?? '') as String;
       final errorData = error['data'];
 
-      throw RPCError(code, message, errorData);
+      throw WebThreeRPCError(code, message, errorData);
     }
 
     final id = data['id'] as int;
@@ -74,18 +75,4 @@ class RPCResponse {
   final dynamic result;
 
   const RPCResponse(this.id, this.result);
-}
-
-/// Exception thrown when an the server returns an error code to an rpc request.
-class RPCError implements Exception {
-  final int errorCode;
-  final String message;
-  final dynamic data;
-
-  const RPCError(this.errorCode, this.message, this.data);
-
-  @override
-  String toString() {
-    return 'RPCError: got code $errorCode with msg \"$message\".';
-  }
 }

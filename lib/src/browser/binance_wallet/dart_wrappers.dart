@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:js/js_util.dart';
 import 'package:webthree/src/core/exception_utils_js.dart'
-    if (dart.library.io) 'package:webthree/src/core/exception_utils_js.dart'
+    if (dart.library.io) 'package:webthree/src/core/exception_utils_io.dart'
     if (dart.library.js) 'package:webthree/src/core/exception_utils_js.dart';
 
 import '../../../credentials.dart';

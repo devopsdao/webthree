@@ -90,10 +90,9 @@ If you want to integrate `webthree` with other wallet providers, you can impleme
 
 The library won't send signed transactions to miners itself. Instead,
 it relies on an RPC client to do that. You can use a public RPC API like
-[infura](https://infura.io/), setup your own using [geth](https://github.com/ethereum/go-ethereum/wiki/geth)
-or, if you just want to test things out, use a private testnet with
-[truffle](https://www.trufflesuite.com/) and [ganache](https://www.trufflesuite.com/ganache). All these options will give you
-an RPC endpoint to which the library can connect.
+[infura](https://infura.io/), setup your own using [geth](https://geth.ethereum.org/docs/getting-started)
+or for development it is handy to use a private testnet running on 
+[hardhat](https://hardhat.org/hardhat-runner/docs/getting-started#quick-start). You will be able to run a local RPC endpoint to which the library can connect.
 
 ```dart
 import 'package:http/http.dart'; //You can also import the browser version
@@ -144,54 +143,13 @@ the signed transaction but don't intend to send it, you can use
 
 ## Metamask Example
 
-```dart
- import 'dart:convert';
- import 'dart:html';
- import 'dart:typed_data';
+  Please see ./example/metamask/main.dart
 
- conditionally import dependencies in order to support web and other platform builds from a single codebase
- import 'package:js/js.dart'
-     if (dart.library.io) 'package:webthree/lib/src/browser/js-stub.dart'
-     if (dart.library.js) 'package:js/js.dart';
- import 'package:webthree/browser.dart'
-     if (dart.library.io) 'package:webthree/lib/src/browser/dart_wrappers_stub.dart'
-     if (dart.library.js) 'package:webthree/browser.dart';
- import 'package:webthree/webthree.dart';
+## WalletConnect V2 Example
 
- @JS()
- @anonymous
- class JSrawRequestParams {
-   external String get chainId;
+  Please see [WalletConnectFlutterV2](https://github.com/WalletConnect/WalletConnectFlutterV2) and [WalletConnect Web3Modal](https://github.com/WalletConnect/Web3ModalFlutter) repos.
 
-    Must have an unnamed factory constructor with named arguments.
-   external factory JSrawRequestParams({String chainId});
- }
 
- Future<void> main() async {
-   final eth = window.ethereum;
-   if (eth == null) {
-     print('MetaMask is not available');
-     return;
-   }
-
-   final client = Web3Client.custom(eth.asRpcService());
-   final credentials = await eth.requestAccount();
-
-   print('Using ${credentials.address}');
-   print('Client is listening: ${await client.isListeningForNetwork()}');
-
-   final message = Uint8List.fromList(utf8.encode('Hello from webthree'));
-   final signature = await credentials.signPersonalMessage(message);
-   print('Signature: ${base64.encode(signature)}');
-
-   await eth.rawRequest('wallet_switchEthereumChain',
-       params: [JSrawRequestParams(chainId: '0x507')]);
-   final String chainIDHex = await eth.rawRequest('eth_chainId') as String;
-   final chainID = int.parse(chainIDHex);
-   print('chainID: $chainID');
- }
-
-```
 ### Smart contracts
 
 The library can parse the abi of a smart contract and send data to it. It can also

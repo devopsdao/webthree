@@ -1,3 +1,17 @@
+## 2.7.1
+- Fixed multiplatform compatibility
+
+## 2.7.0
+- Now passing error code, message and data in all exceptions
+- Fixed multiplatform compatibility
+- Added dodao.dev chain to metamask example
+
+## 2.6.4
+- Fixed web metamask example
+
+## 2.6.3
+- Fixed web metamask example
+
 ## 2.6.2
 - Fix imports
 

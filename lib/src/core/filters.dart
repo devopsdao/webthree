@@ -340,7 +340,7 @@ class _FilterEngine {
       final response = await _rpc.call(request.method, request.params);
       filter.id = response.result as String;
       _startTicking();
-    } on RPCError catch (e, s) {
+    } on WebThreeRPCError catch (e, s) {
       filter._controller.addError(e, s);
       await filter._controller.close();
       _filters.remove(filter);

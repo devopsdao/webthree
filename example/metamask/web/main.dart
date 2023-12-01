@@ -59,26 +59,6 @@ class JSrawRequestSwitchChainParams {
   external factory JSrawRequestSwitchChainParams({String chainId});
 }
 
-@JS()
-@anonymous
-class JSrawRequestAddChainParams {
-  // external String get params;
-  external String get chainId;
-  external String get chainName;
-  external Map<String, dynamic> get nativeCurrency;
-  external List get rpcUrls;
-  external String get blockExplorerUrls;
-  external String get iconUrls;
-  // Must have an unnamed factory constructor with named arguments.
-  external factory JSrawRequestAddChainParams(
-      {String chainId,
-      String chainName,
-      Map<String, dynamic> nativeCurrency,
-      List rpcUrls,
-      List blockExplorerUrls,
-      List iconUrls});
-}
-
 @JS('JSON.stringify')
 external String stringify(Object obj);
 //javascript object conversion ends
@@ -104,8 +84,6 @@ Future<void> metamask() async {
   final message = Uint8List.fromList(utf8.encode('Hello from webthree'));
   final signature = await credentials.signPersonalMessage(message);
   print('Signature: ${base64.encode(signature)}');
-
-  print('ok');
 }
 
 Future<void> binanceChainWallet() async {
@@ -149,8 +127,12 @@ Future<void> okxWallet() async {
 Future<void> addChain() async {
   //must assign eth object in function, otherwise rawRequest is not available
   final eth = window.ethereum;
+  if (eth == null) {
+    print('Wallet is not available');
+    return;
+  }
   final params = <String, dynamic>{
-    'chainId': '0x855456',
+    'chainId': '0xd0da0',
     'chainName': 'Dodao',
     'nativeCurrency': <String, dynamic>{
       'name': 'Dodao',
@@ -163,13 +145,17 @@ Future<void> addChain() async {
     ],
     'iconUrls': [''],
   };
-  await eth!
+  await eth
       .rawRequest('wallet_addEthereumChain', params: [mapToJsObject(params)]);
 }
 
 Future<void> switchChain() async {
   //must assign eth object in function, otherwise rawRequest is not available
   final eth = window.ethereum;
+  if (eth == null) {
+    print('Wallet is not available');
+    return;
+  }
   try {
     final chainIdHex = await eth!.rawRequest('eth_chainId');
     print('current chain id $chainIdHex');
@@ -178,8 +164,8 @@ Future<void> switchChain() async {
   }
 
   try {
-    await eth!.rawRequest('wallet_switchEthereumChain',
-        params: [JSrawRequestSwitchChainParams(chainId: '0x507')]);
+    await eth.rawRequest('wallet_switchEthereumChain',
+        params: [JSrawRequestSwitchChainParams(chainId: '0xd0da0')]);
   } on EthereumException catch (e) {
     if (e.code == 4902) {
       await addChain();
