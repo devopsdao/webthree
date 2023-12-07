@@ -52,9 +52,13 @@ extension DartBinanceChain on BinanceChainWallet {
   }
 
   /// Asks the user to select an account and give your application access to it.
-  Future<CredentialsWithKnownAddress> requestAccount() {
+  Future<List<CredentialsWithKnownAddress>> requestAccounts() {
     return rawRequest('eth_requestAccounts').then((res) {
-      return BinanceWalletCredentials((res as List).single as String, this);
+      final List<CredentialsWithKnownAddress> credentials = [];
+      for (final account in res) {
+        credentials.add(BinanceWalletCredentials(account as String, this));
+      }
+      return credentials;
     });
   }
 

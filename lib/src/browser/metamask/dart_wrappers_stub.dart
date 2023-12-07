@@ -47,7 +47,7 @@ extension DartEthereum on Ethereum {
   }
 
   /// Asks the user to select an account and give your application access to it.
-  Future<dynamic> requestAccount() {
+  Future<dynamic> requestAccounts() {
     throw UnimplementedError();
   }
 

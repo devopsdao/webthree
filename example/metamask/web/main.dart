@@ -76,13 +76,13 @@ Future<void> metamask() async {
   await switchChain();
 
   final client = Web3Client.custom(eth.asRpcService());
-  final credentials = await eth.requestAccount();
+  final credentials = await eth.requestAccounts();
 
-  print('Using ${credentials.address}');
+  print('Using ${credentials[0].address}');
   print('Client is listening: ${await client.isListeningForNetwork()}');
 
   final message = Uint8List.fromList(utf8.encode('Hello from webthree'));
-  final signature = await credentials.signPersonalMessage(message);
+  final signature = await credentials[0].signPersonalMessage(message);
   print('Signature: ${base64.encode(signature)}');
 }
 
@@ -94,13 +94,13 @@ Future<void> binanceChainWallet() async {
   }
 
   final client = Web3Client.custom(bsc.asRpcService());
-  final credentials = await bsc.requestAccount();
+  final credentials = await bsc.requestAccounts();
 
-  print('Using ${credentials.address}');
+  print('Using ${credentials[0].address}');
   print('Client is listening: ${await client.isListeningForNetwork()}');
 
   final message = Uint8List.fromList(utf8.encode('Hello from webthree'));
-  final signature = await credentials.signPersonalMessage(message);
+  final signature = await credentials[0].signPersonalMessage(message);
   print('Signature: ${base64.encode(signature)}');
   await switchChain();
 }
@@ -113,13 +113,13 @@ Future<void> okxWallet() async {
   }
 
   final client = Web3Client.custom(okx.asRpcService());
-  final credentials = await okx.requestAccount();
+  final credentials = await okx.requestAccounts();
 
-  print('Using ${credentials.address}');
+  print('Using ${credentials[0].address}');
   print('Client is listening: ${await client.isListeningForNetwork()}');
 
   final message = Uint8List.fromList(utf8.encode('Hello from webthree'));
-  final signature = await credentials.signPersonalMessage(message);
+  final signature = await credentials[0].signPersonalMessage(message);
   print('Signature: ${base64.encode(signature)}');
   await switchChain();
 }

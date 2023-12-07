@@ -46,7 +46,7 @@ extension DartOkx on OkxWallet {
   }
 
   /// Asks the user to select an account and give your application access to it.
-  Future<dynamic> requestAccount() {
+  Future<dynamic> requestAccounts() {
     throw UnimplementedError();
   }
 
