@@ -1,3 +1,9 @@
+## 2.7.3
+-  added chainChanged, accountsChanged, connect, disconnect, message metamask event streams
+
+## 2.7.2
+-  requestAccounts instead of requestAccount for Metamask
+
 ## 2.7.1
 - Fixed multiplatform compatibility
 

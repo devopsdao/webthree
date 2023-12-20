@@ -62,9 +62,20 @@ extension DartEthereum on Ethereum {
     throw UnimplementedError();
   }
 
-  /// A broadcast stream emitting values when the selected chain is changed by
-  /// the user.
-  Stream<int> get chainChanged => stream('chainChanged').cast();
+  /// A broadcast stream emitting values when the selected chain is changed by the user.
+  Stream<dynamic> get chainChanged => stream('chainChanged').cast();
+
+  /// A broadcast stream emitting values when the selected account is changed by the user.
+  Stream<dynamic> get accountsChanged => stream('accountsChanged').cast();
+
+  /// A broadcast stream emitting values when the selected account is connected by the user.
+  Stream<dynamic> get connect => stream('connect').cast();
+
+  /// A broadcast stream emitting values when the selected account is disconnected by the user.
+  Stream<dynamic> get disconnect => stream('disconnect').cast();
+
+  /// A broadcast stream emitting values when a message is received to the connected account.
+  Stream<dynamic> get message => stream('message').cast();
 }
 
 class _MetaMaskRpcService extends RpcService {
