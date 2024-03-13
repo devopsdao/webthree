@@ -40,7 +40,7 @@ class ExceptionUtils {
                 rpcErrorJson['data']['message'] ?? '',
                 rpcErrorJson['data']['data'] ?? '',
               );
-            } on (FormatException fe,) {
+            } on FormatException catch (_) {
               throw WebThreeRPCError(
                 err['code'] ?? '',
                 err['message'] ?? '',
