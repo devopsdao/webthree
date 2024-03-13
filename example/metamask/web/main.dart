@@ -157,7 +157,7 @@ Future<void> switchChain() async {
     return;
   }
   try {
-    final chainIdHex = await eth!.rawRequest('eth_chainId');
+    final chainIdHex = await eth.rawRequest('eth_chainId');
     print('current chain id $chainIdHex');
   } on EthereumException catch (e) {
     print('user rejected ${e.message}');
