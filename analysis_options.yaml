@@ -19,7 +19,6 @@ linter:
     - avoid_empty_else
     # - avoid_print (all our prints can be disabled)
     - avoid_relative_lib_imports
-    - avoid_returning_null_for_future
     #    - avoid_slow_async_io
     - avoid_types_as_parameter_names
     - cancel_subscriptions
@@ -67,7 +66,6 @@ linter:
     #    - avoid_private_typedef_functions (they're still useful)
     - avoid_renaming_method_parameters
     - avoid_return_types_on_setters
-    - avoid_returning_null
     - avoid_returning_null_for_void
     - avoid_returning_this
     - avoid_setters_without_getters

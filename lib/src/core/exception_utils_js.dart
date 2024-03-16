@@ -24,20 +24,33 @@ class ExceptionUtils {
         // Case of Metamask...
         switch (err['code']) {
           case 4001:
-            throw EthereumUserRejected(err['code'], err['message'], err['stack']);
+            throw EthereumUserRejected(
+                err['code'], err['message'], err['stack']);
           case -32603:
-            String rpcErrorData = err['message'].toString().replaceFirst("[ethjs-query] while formatting outputs from RPC '{\"value\":", '');
+            String rpcErrorData = err['message'].toString().replaceFirst(
+                "[ethjs-query] while formatting outputs from RPC '{\"value\":",
+                '');
             if (rpcErrorData.length - 2 > 0) {
               rpcErrorData = rpcErrorData.substring(0, rpcErrorData.length - 2);
             }
-            final rpcErrorJson = json.decode(rpcErrorData);
-            throw WebThreeRPCError(
-              rpcErrorJson['data']['code'] ?? '',
-              rpcErrorJson['data']['message'] ?? '',
-              rpcErrorJson['data']['data'] ?? '',
-            );
+            try {
+              final rpcErrorJson = json.decode(rpcErrorData);
+              throw WebThreeRPCError(
+                rpcErrorJson['data']['code'] ?? '',
+                rpcErrorJson['data']['message'] ?? '',
+                rpcErrorJson['data']['data'] ?? '',
+              );
+            } on FormatException catch (_) {
+              throw WebThreeRPCError(
+                err['code'] ?? '',
+                err['message'] ?? '',
+                err['data'] ?? '',
+              );
+            }
+
           case -32601:
-            throw EthereumChainSwitchNotSupported(err['code'], err['message'], err['stack']);
+            throw EthereumChainSwitchNotSupported(
+                err['code'], err['message'], err['stack']);
           default:
             if (err['message'] != null) {
               throw EthereumException(
@@ -57,7 +70,10 @@ class ExceptionUtils {
         }
       }
       if (err['error'] != null) {
-        if (err['error'].toString().toLowerCase().contains('rejected by user')) {
+        if (err['error']
+            .toString()
+            .toLowerCase()
+            .contains('rejected by user')) {
           throw EthereumUserRejected(err['code'], err['message'], err['stack']);
         }
         throw BinanceWalletException(
