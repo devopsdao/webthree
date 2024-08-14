@@ -65,7 +65,12 @@ class _PendingTransactionsFilter extends _Filter<String> {
 
 /// Options for event filters created with [Web3Client.events].
 class FilterOptions {
-  FilterOptions({this.fromBlock, this.toBlock, this.address, this.topics});
+  FilterOptions({
+    this.fromBlock,
+    this.toBlock,
+    this.address,
+    this.topics,
+  });
 
   FilterOptions.events(
       {required DeployedContract contract,
@@ -75,6 +80,22 @@ class FilterOptions {
       : address = contract.address,
         topics = [
           [bytesToHex(event.signature, padToEvenLength: true, include0x: true)]
+        ];
+
+  FilterOptions.approval({
+    required DeployedContract contract,
+    required ContractEvent event,
+    required EthereumAddress owner,
+    required EthereumAddress spender,
+    this.fromBlock,
+    this.toBlock,
+  })  : address = contract.address,
+        topics = [
+          [
+            bytesToHex(event.signature, padToEvenLength: true, include0x: true),
+            owner.hex,
+            spender.hex,
+          ]
         ];
 
   /// The earliest block which should be considered for this filter. Optional,
@@ -294,8 +315,6 @@ class _EventFilter extends _Filter<FilterEvent> {
   }
 }
 
-const _pingDuration = Duration(seconds: 2);
-
 class _FilterEngine {
   _FilterEngine(this._client);
 
@@ -362,7 +381,9 @@ class _FilterEngine {
   }
 
   void _startTicking() {
-    _ticker ??= Timer.periodic(_pingDuration, (_) => _refreshFilters());
+    _ticker ??= Timer.periodic(
+        _client.customFilterPingInterval ?? const Duration(seconds: 2),
+        (_) => _refreshFilters());
   }
 
   Future<void> _refreshFilters() async {
