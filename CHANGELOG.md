@@ -1,3 +1,6 @@
+## 2.7.4
+-  Improved error parsing, support of non-json errors
+
 ## 2.7.3
 -  added chainChanged, accountsChanged, connect, disconnect, message metamask event streams
 
