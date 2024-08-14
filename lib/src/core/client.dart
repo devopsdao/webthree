@@ -25,10 +25,21 @@ class Web3Client {
   /// [httpClient] will be used to send requests to the rpc server.
   /// Am isolate will be used to perform expensive operations, such as signing
   /// transactions or computing private keys.
-  Web3Client(String url, Client httpClient, {SocketConnector? socketConnector})
-      : this.custom(JsonRPC(url, httpClient), socketConnector: socketConnector);
+  Web3Client(
+    String url,
+    Client httpClient, {
+    SocketConnector? socketConnector,
+    Duration? customFilterPingInterval = const Duration(seconds: 2),
+  }) : this.custom(
+          JsonRPC(url, httpClient),
+          socketConnector: socketConnector,
+          customFilterPingInterval: customFilterPingInterval,
+        );
 
-  Web3Client.custom(RpcService rpc, {this.socketConnector}) : _jsonRpc = rpc {
+  Web3Client.custom(RpcService rpc,
+      {this.socketConnector,
+      this.customFilterPingInterval = const Duration(seconds: 2)})
+      : _jsonRpc = rpc {
     _filters = _FilterEngine(this);
   }
 
@@ -48,6 +59,10 @@ class Web3Client {
 
   ///Whether errors, handled or not, should be printed to the console.
   bool printErrors = false;
+
+  /// The optional ping interval (by default 2 seconds) is the custom filter
+  /// refresh interval
+  final Duration? customFilterPingInterval;
 
   Future<T> makeRPCCall<T>(String function, [List<dynamic>? params]) async {
     try {
