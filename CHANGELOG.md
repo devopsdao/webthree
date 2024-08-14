@@ -1,3 +1,7 @@
+## 2.7.4
+- Added a new parameter in `Web3Client` class to manage the custom filter refresh interval
+- Added an approval method in `FilterOptions` to manage correctly topics with spender and owner
+
 ## 2.7.3
 -  added chainChanged, accountsChanged, connect, disconnect, message metamask event streams
 
@@ -235,10 +239,10 @@ background isolate and terminate all running streams.
 
 This version contains breaking changes! Here is an overview listing some of them.
 
-| Before                                                                                                 |                                                                                                       Updated API |
-| :----------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------: |
-| Creating credentials via `Credentials.fromPrivateKeyHex`                                               |                                 Use the `EthPrivateKey` class or, even better, `client.credentialsFromPrivateKey` |
-| Sending transactions or calling contract functions                                                     | The api has been changed to just a single methods instead of a transaction builder. See the examples for details. |
+| Before                                                                                             |                                                                                                       Updated API |
+| :------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------: |
+| Creating credentials via `Credentials.fromPrivateKeyHex`                                           |                                 Use the `EthPrivateKey` class or, even better, `client.credentialsFromPrivateKey` |
+| Sending transactions or calling contract functions                                                 | The api has been changed to just a single methods instead of a transaction builder. See the examples for details. |
 | Low-level cryptographic operations like signing, hashing and converting hex - byte array - integer |                                  Not available in the core library. Import `package:web3dart/crypto.dart` instead |
 
 If you run into problems after updating, please [create an issue](https://github.com/simolus3/web3dart/issues/new).
