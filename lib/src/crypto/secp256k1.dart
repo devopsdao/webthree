@@ -45,7 +45,7 @@ BigInt generateNewPrivateKey(Random random) {
   generator.init(ParametersWithRandom(keyParams, RandomBridge(random)));
 
   final key = generator.generateKeyPair();
-  final privateKey = key.privateKey as ECPrivateKey;
+  final privateKey = key.privateKey;
   return privateKey.d!;
 }
 

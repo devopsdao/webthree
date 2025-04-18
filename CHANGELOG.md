@@ -1,3 +1,6 @@
+## 2.7.6
+- Update deps
+
 ## 2.7.5
 -  Added a new parameter in `Web3Client` class to manage the custom filter refresh interval
 -  Added an approval method in `FilterOptions` to manage correctly topics with spender and owner
