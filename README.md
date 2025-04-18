@@ -9,7 +9,7 @@
 [![forks](https://img.shields.io/github/forks/devopsdao/webthree)](https://github.com/devopsdao/webthree/network/members)
 [![sdk version](https://badgen.net/pub/sdk-version/webthree)](https://pub.dartlang.org/packages/webthree)
 
-WebThree - a web3 library for dart that allows you to interact with a local or remote ethereum node using HTTP or WebSocket. Suports custom credentials providers like WalletConnect and Metamask.
+WebThree - a web3 library for dart that allows you to interact with a local or remote ethereum node using HTTP or WebSocket. Supports custom credentials providers like WalletConnect and Metamask.
 
 Fork of original [web3dart](https://github.com/simolus3/web3dart) 2.3.5 by simolus3, incorporating all changes from other forks.
 
