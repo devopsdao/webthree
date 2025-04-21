@@ -2,32 +2,29 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-/// Utility methods to manipulate `package:js` annotated JavaScript interop
-/// objects in cases where the name to call is not known at runtime.
+/// Utility methods to manipulate JavaScript interop objects dynamically.
 ///
-/// You should only use these methods when the same effect cannot be achieved
-/// with `@JS()` annotations.
+/// These methods correspond to the utilities available in `dart:js_util`
+/// and are used for interacting with JavaScript objects when static typing
+/// via `dart:js_interop` is not sufficient or desired.
 ///
 /// {@category Web}
 library dart.js_util;
-
-// Examples can assume:
-// class JS { const JS(); }
-// class Promise<T> {}
 
 /// Recursively converts a JSON-like collection to JavaScript compatible
 /// representation.
 ///
 /// WARNING: performance of this method is much worse than other util
 /// methods in this library. Only use this method as a last resort. Prefer
-/// instead to use `@anonymous` `@JS()` annotated classes to create map-like
-/// objects for JS interop.
+/// instead to use `@JS() @anonymous` classes (defined with `dart:js_interop`)
+/// to create map-like objects for JS interop.
 ///
 /// The argument must be a [Map] or [Iterable], the contents of which are also
 /// deeply converted. Maps are converted into JavaScript objects. Iterables are
-/// converted into arrays. Strings, numbers, bools, and `@JS()` annotated
-/// objects are passed through unmodified. Dart objects are also passed through
-/// unmodified, but their members aren't usable from JavaScript.
+/// converted into arrays. Strings, numbers, bools, and JS interop objects
+/// (defined with `dart:js_interop`) are passed through unmodified. Other Dart
+/// objects are also passed through unmodified, but their members aren't usable
+/// from JavaScript.
 external dynamic jsify(Object object);
 
 external Object get globalThis;
@@ -116,14 +113,22 @@ class NullRejectionException implements Exception {
 
 /// Converts a JavaScript Promise to a Dart [Future].
 ///
-/// ```dart template:top
+/// (Note: In modern JS interop, prefer using the `.toDart` extension getter
+/// on `JSPromise` from `dart:js_interop` when possible).
+///
+/// Example (conceptual):
+/// ```dart
 /// @JS()
-/// external Promise<num> get threePromise; // Resolves to 3
+/// external JSPromise<JSNumber> get threePromise; // Resolves to 3
 ///
 /// void main() async {
-///   final Future<num> threeFuture = promiseToFuture(threePromise);
+///   // Option 1: using promiseToFuture (less preferred now)
+///   final Future<num> threeFuture1 = promiseToFuture<num>(threePromise);
+///   final three1 = await threeFuture1; // == 3
 ///
-///   final three = await threeFuture; // == 3
+///   // Option 2: using .toDart (preferred)
+///   final Future<JSNumber> threeFuture2 = threePromise.toDart;
+///   final three2 = (await threeFuture2).toDartInt; // == 3
 /// }
 /// ```
 external Future<T> promiseToFuture<T>(Object jsPromise);

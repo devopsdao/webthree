@@ -1,14 +1,12 @@
-@JS()
 library webthree.internal.js.creds;
 
+import 'dart:js_interop';
+import 'dart:js_util';
 import 'dart:typed_data';
 
-import 'package:js/js.dart';
 import 'package:webthree/webthree.dart';
 
 import '../../../crypto.dart';
-
-import 'dart_wrappers.dart';
 import 'javascript.dart';
 
 class MetaMaskCredentials extends CredentialsWithKnownAddress
@@ -28,10 +26,19 @@ class MetaMaskCredentials extends CredentialsWithKnownAddress
 
   @override
   Future<Uint8List> signPersonalMessage(Uint8List payload, {int? chainId}) {
-    return ethereum.rawRequest('personal_sign', params: [
+    final paramsValue = jsify([
       address.hex,
       _bytesToData(payload),
-    ]).then(_responseToBytes);
+    ]);
+
+    final responsePromise = ethereum.request(RequestArguments(
+      method: 'personal_sign',
+      params: paramsValue as JSAny?,
+    ));
+
+    return (responsePromise as JSPromise<JSString>)
+        .toDart
+        .then((JSString jsResult) => _responseToBytes(jsResult.toDart));
   }
 
   @override
@@ -45,10 +52,16 @@ class MetaMaskCredentials extends CredentialsWithKnownAddress
       data: _bytesToData(transaction.data),
     );
 
-    return ethereum.rawRequest(
-      'eth_sendTransaction',
-      params: [param],
-    ).then((res) => res as String);
+    final paramsValue = jsify([param]);
+
+    final responsePromise = ethereum.request(RequestArguments(
+      method: 'eth_sendTransaction',
+      params: paramsValue as JSAny?,
+    ));
+
+    return (responsePromise as JSPromise<JSString>)
+        .toDart
+        .then((JSString jsResult) => jsResult.toDart);
   }
 }
 

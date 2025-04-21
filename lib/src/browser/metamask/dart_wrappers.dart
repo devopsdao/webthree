@@ -1,6 +1,7 @@
 import 'dart:async';
 
-import 'package:js/js_util.dart';
+import 'dart:js_interop' as js_interop;
+import 'dart:js_util';
 import 'package:webthree/src/core/exception_utils_js.dart'
     if (dart.library.io) 'package:webthree/src/core/exception_utils_io.dart'
     if (dart.library.js) 'package:webthree/src/core/exception_utils_js.dart';
@@ -41,13 +42,14 @@ extension DartEthereum on Ethereum {
   ///
   /// See also:
   ///  - the rpc documentation under https://docs.metamask.io/guide/rpc-api.html
-  Future<dynamic> rawRequest(String method, {Object? params}) {
-    // No, this can't be simplified. Metamask wants `params` to be undefined.
+  Future<dynamic> rawRequest(String method, {js_interop.JSAny? params}) {
     final args = params == null
         ? RequestArguments(method: method)
         : RequestArguments(method: method, params: params);
-    return promiseToFuture(request(args)).onError((error, stackTrace) {
+    final jsPromise = request(args);
+    return jsPromise.toDart.catchError((error, stackTrace) {
       ExceptionUtils.analyzeException(error!);
+      throw error;
     });
   }
 
@@ -96,7 +98,8 @@ class _MetaMaskRpcService extends RpcService {
 
   @override
   Future<RPCResponse> call(String function, [List? params]) {
-    return _ethereum.rawRequest(function, params: params).then((res) {
+    final jsParams = params != null ? jsify(params) as js_interop.JSAny? : null;
+    return _ethereum.rawRequest(function, params: jsParams).then((res) {
       return RPCResponse(0, res);
     });
   }
@@ -133,7 +136,7 @@ class _EventStreamSubscription implements StreamSubscription<dynamic> {
   final String _eventName;
   Function(dynamic)? _onData;
 
-  Function? _jsCallback;
+  js_interop.JSAny? _jsCallback;
   int _activePauseRequests = 0;
   bool _isCancelled = false;
 
@@ -208,7 +211,7 @@ class _EventStreamSubscription implements StreamSubscription<dynamic> {
 
   void _resumeIfNecessary() {
     if (_onData != null && !isPaused) {
-      final cb = _jsCallback = allowInterop(_onData!);
+      final cb = _jsCallback = _onData!.toJS;
       _client.on(_eventName, cb);
     }
   }
