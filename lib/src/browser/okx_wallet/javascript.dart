@@ -1,19 +1,16 @@
-@JS()
 library webthree.internal.js;
 
-import 'dart:html';
+import 'dart:js_interop';
 
-import 'package:js/js.dart';
 import 'package:meta/meta.dart';
-
-import 'dart_wrappers.dart';
+import 'package:web/web.dart' as web;
 
 @JS('okxwallet')
 external OkxWallet? get _okxWallet;
 
 /// Extension to load obtain the `okxwallet` window property injected by
 /// BinanceChain browser plugins.
-extension GetOkxWallet on Window {
+extension GetOkxWallet on web.Window {
   /// Loads the ethereum instance provided by the browser.
   ///
   /// For more information on how to use this object with the webthree package,
@@ -23,22 +20,26 @@ extension GetOkxWallet on Window {
 }
 
 @JS()
-class OkxWallet {
+@staticInterop
+class OkxWallet {}
+
+extension OkxWalletExtension on OkxWallet {
   external int get chainId;
-  external bool autoRefreshOnNetworkChange;
+  external bool get autoRefreshOnNetworkChange;
+  external set autoRefreshOnNetworkChange(bool value);
   external bool isConnected();
 
   /// This should not be used in user code. Use `stream(event)` instead.
   @internal
-  external void on(String event, Function callback);
+  external void on(String event, JSFunction? callback);
 
   /// This should not be used in user code. Use `stream(event)` instead.
   @internal
-  external void removeListener(String event, Function callback);
+  external void removeListener(String event, JSFunction? callback);
 
   /// This should not be used in user code. Use `requestRaw` instead.
   @internal
-  external Object request(RequestArguments args);
+  external JSPromise request(RequestArguments args);
 }
 
 @JS()
@@ -46,7 +47,7 @@ class OkxWallet {
 @internal
 class RequestArguments {
   external String get method;
-  external Object? get params;
+  external JSAny? get params;
 
-  external factory RequestArguments({required String method, Object? params});
+  external factory RequestArguments({String method, JSAny? params});
 }

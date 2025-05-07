@@ -1,3 +1,6 @@
+## 2.8.0
+- Convert to JS interop
+
 ## 2.7.6
 - Update deps
 

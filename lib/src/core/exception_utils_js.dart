@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:js/js_util.dart';
+import 'dart:js_util';
 import 'package:webthree/src/core/exception.dart';
 
 class ExceptionUtils {

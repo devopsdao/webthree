@@ -1,6 +1,7 @@
 import 'dart:async';
+import 'dart:js_interop';
+import 'dart:js_util';
 
-import 'package:js/js_util.dart';
 import 'package:webthree/src/core/exception_utils_js.dart'
     if (dart.library.io) 'package:webthree/src/core/exception_utils_io.dart'
     if (dart.library.js) 'package:webthree/src/core/exception_utils_js.dart';
@@ -41,13 +42,14 @@ extension DartBinanceChain on BinanceChainWallet {
   ///
   /// See also:
   ///  - the rpc documentation under https://binance-wallet.gitbook.io/binance-chain-wallet/dev/get-started
-  Future<dynamic> rawRequest(String method, {Object? params}) {
-    // No, this can't be simplified. Binance Wallet wants `params` to be undefined.
+  Future<dynamic> rawRequest(String method, {JSAny? params}) {
     final args = params == null
         ? RequestArguments(method: method)
         : RequestArguments(method: method, params: params);
-    return promiseToFuture(request(args)).onError((error, stackTrace) {
+    final jsPromise = request(args);
+    return jsPromise.toDart.catchError((error, stackTrace) {
       ExceptionUtils.analyzeException(error!);
+      throw error;
     });
   }
 
@@ -96,7 +98,8 @@ class _BinanceWalletRpcService extends RpcService {
 
   @override
   Future<RPCResponse> call(String function, [List? params]) {
-    return _binancechain.rawRequest(function, params: params).then((res) {
+    final jsParams = params != null ? jsify(params) as JSAny? : null;
+    return _binancechain.rawRequest(function, params: jsParams).then((res) {
       return RPCResponse(0, res);
     });
   }
@@ -208,15 +211,15 @@ class _EventStreamSubscription implements StreamSubscription<dynamic> {
 
   void _resumeIfNecessary() {
     if (_onData != null && !isPaused) {
-      final cb = _jsCallback = allowInterop(_onData!);
-      _client.on(_eventName, cb);
+      final cb = _jsCallback = _onData!;
+      _client.on(_eventName, cb as JSFunction);
     }
   }
 
   void _stopListening() {
     final callback = _jsCallback;
     if (callback != null) {
-      _client.removeListener(_eventName, callback);
+      _client.removeListener(_eventName, callback as JSFunction);
     }
   }
 }

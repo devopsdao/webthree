@@ -1,74 +1,29 @@
 import 'dart:convert';
-import 'dart:html';
+import 'dart:js_interop';
+import 'dart:js_util' as js_util;
 import 'dart:typed_data';
 
-import 'package:js/js.dart'
-    if (dart.library.io) 'package:webthree/src/browser/js_stub.dart'
-    if (dart.library.js) 'package:js/js.dart';
-import 'package:js/js_util.dart'
-    if (dart.library.io) 'package:webthree/src/browser/js_util_stub.dart'
-    if (dart.library.js) 'package:js/js_util.dart';
+import 'package:web/web.dart' as web;
 import 'package:webthree/browser.dart';
 import 'package:webthree/webthree.dart';
 
-//Javascript object conversion
-Object mapToJsObject(Map map) {
-  final object = newObject();
-  map.forEach((k, v) {
-    if (v is Map) {
-      setProperty(object, k, mapToJsObject(v));
-    } else {
-      setProperty(object, k, v);
-    }
-  });
-  return object;
-}
-
-Map jsObjectToMap(dynamic jsObject) {
-  final Map result = {};
-  final List keys = _objectKeys(jsObject);
-  for (final dynamic key in keys) {
-    final dynamic value = getProperty(jsObject, key);
-    List nestedKeys = [];
-    if (value is List) {
-      nestedKeys = objectKeys(value);
-    }
-    if (nestedKeys.isNotEmpty) {
-      //nested property
-      result[key] = jsObjectToMap(value);
-    } else {
-      result[key] = value;
-    }
-  }
-  return result;
-}
-
-List<String> objectKeys(dynamic jsObject) {
-  return _objectKeys(jsObject);
-}
-
-@JS('Object.keys')
-external List<String> _objectKeys(jsObject);
-
 @JS()
 @anonymous
-class JSrawRequestSwitchChainParams {
-  external String get chainId;
+class _SwitchChainParams {
+  external JSString get chainId;
 
-  // Must have an unnamed factory constructor with named arguments.
-  external factory JSrawRequestSwitchChainParams({String chainId});
+  external factory _SwitchChainParams({JSString chainId});
 }
 
 @JS('JSON.stringify')
-external String stringify(Object obj);
-//javascript object conversion ends
+external String stringify(JSAny? obj);
 
 Future<void> main() async {
   await metamask();
 }
 
 Future<void> metamask() async {
-  final eth = window.ethereum;
+  final eth = web.window.ethereum;
   if (eth == null) {
     print('MetaMask is not available');
     return;
@@ -78,7 +33,7 @@ Future<void> metamask() async {
   final client = Web3Client.custom(eth.asRpcService());
   final credentials = await eth.requestAccounts();
 
-  print('Using ${credentials[0].address}');
+  print('Using ${credentials[0].address.hex}');
   print('Client is listening: ${await client.isListeningForNetwork()}');
 
   final message = Uint8List.fromList(utf8.encode('Hello from webthree'));
@@ -87,7 +42,7 @@ Future<void> metamask() async {
 }
 
 Future<void> binanceChainWallet() async {
-  final bsc = window.BinanceChain;
+  final bsc = web.window.BinanceChain;
   if (bsc == null) {
     print('BinanceWallet is not available');
     return;
@@ -96,7 +51,7 @@ Future<void> binanceChainWallet() async {
   final client = Web3Client.custom(bsc.asRpcService());
   final credentials = await bsc.requestAccounts();
 
-  print('Using ${credentials[0].address}');
+  print('Using ${credentials[0].address.hex}');
   print('Client is listening: ${await client.isListeningForNetwork()}');
 
   final message = Uint8List.fromList(utf8.encode('Hello from webthree'));
@@ -106,7 +61,7 @@ Future<void> binanceChainWallet() async {
 }
 
 Future<void> okxWallet() async {
-  final okx = window.OkxChainWallet;
+  final okx = web.window.OkxChainWallet;
   if (okx == null) {
     print('OkxChainWallet is not available');
     return;
@@ -115,7 +70,7 @@ Future<void> okxWallet() async {
   final client = Web3Client.custom(okx.asRpcService());
   final credentials = await okx.requestAccounts();
 
-  print('Using ${credentials[0].address}');
+  print('Using ${credentials[0].address.hex}');
   print('Client is listening: ${await client.isListeningForNetwork()}');
 
   final message = Uint8List.fromList(utf8.encode('Hello from webthree'));
@@ -125,8 +80,7 @@ Future<void> okxWallet() async {
 }
 
 Future<void> addChain() async {
-  //must assign eth object in function, otherwise rawRequest is not available
-  final eth = window.ethereum;
+  final eth = web.window.ethereum;
   if (eth == null) {
     print('Wallet is not available');
     return;
@@ -145,32 +99,40 @@ Future<void> addChain() async {
     ],
     'iconUrls': [''],
   };
-  await eth
-      .rawRequest('wallet_addEthereumChain', params: [mapToJsObject(params)]);
+
+  try {
+    await js_util.promiseToFuture(eth.rawRequest('wallet_addEthereumChain',
+        params: js_util.jsify([params]) as JSObject?));
+    print('Dodao network added');
+  } on Object catch (e) {
+    print('Failed to add Dodao network: $e');
+  }
 }
 
 Future<void> switchChain() async {
-  //must assign eth object in function, otherwise rawRequest is not available
-  final eth = window.ethereum;
+  final eth = web.window.ethereum;
   if (eth == null) {
     print('Wallet is not available');
     return;
   }
   try {
-    final chainIdHex = await eth.rawRequest('eth_chainId');
-    print('current chain id $chainIdHex');
-  } on EthereumException catch (e) {
-    print('user rejected ${e.message}');
-  }
+    final chainIdResult =
+        await js_util.promiseToFuture<String>(eth.rawRequest('eth_chainId'));
+    print('Current chain id $chainIdResult');
 
-  try {
-    await eth.rawRequest('wallet_switchEthereumChain',
-        params: [JSrawRequestSwitchChainParams(chainId: '0xd0da0')]);
+    await js_util.promiseToFuture(eth.rawRequest('wallet_switchEthereumChain',
+        params: js_util.jsify([_SwitchChainParams(chainId: '0xd0da0'.toJS)])
+            as JSObject?));
+    print('Switched to Dodao network');
   } on EthereumException catch (e) {
+    print('EthereumException during switchChain: ${e.code} ${e.message}');
     if (e.code == 4902) {
+      print('Network not found, attempting to add...');
       await addChain();
     } else {
-      print('user rejected ${e.message}');
+      print('User rejected switch or other error');
     }
+  } catch (e) {
+    print('Generic error during switchChain: $e');
   }
 }

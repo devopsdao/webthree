@@ -1,45 +1,40 @@
-@JS()
 library webthree.internal.js;
 
-import 'dart:html';
+import 'dart:js_interop';
 
-import 'package:js/js.dart';
 import 'package:meta/meta.dart';
-
-import 'dart_wrappers.dart';
+import 'package:web/web.dart' as web;
 
 @JS('ethereum')
 external Ethereum? get _ethereum;
 
-/// Extension to load obtain the `ethereum` window property injected by
-/// Ethereum browser plugins.
-extension GetEthereum on Window {
-  /// Loads the ethereum instance provided by the browser.
-  ///
-  /// For more information on how to use this object with the webthree package,
-  /// see the methods on [DartEthereum].
+extension GetEthereum on web.Window {
   Ethereum? get ethereum => _ethereum;
 }
 
 @JS()
-class Ethereum {
+@staticInterop
+class Ethereum {}
+
+extension EthereumExtension on Ethereum {
   external bool get isMetaMask;
   external bool get isTrust;
   external int get chainId;
-  external bool autoRefreshOnNetworkChange;
+  external bool get autoRefreshOnNetworkChange;
+  external set autoRefreshOnNetworkChange(bool value);
   external bool isConnected();
 
   /// This should not be used in user code. Use `stream(event)` instead.
   @internal
-  external void on(String event, Function callback);
+  external void on(String event, JSAny? callback);
 
   /// This should not be used in user code. Use `stream(event)` instead.
   @internal
-  external void removeListener(String event, Function callback);
+  external void removeListener(String event, JSAny? callback);
 
   /// This should not be used in user code. Use `requestRaw` instead.
   @internal
-  external Object request(RequestArguments args);
+  external JSPromise request(RequestArguments args);
 }
 
 @JS()
@@ -47,7 +42,7 @@ class Ethereum {
 @internal
 class RequestArguments {
   external String get method;
-  external Object? get params;
+  external JSAny? get params;
 
-  external factory RequestArguments({required String method, Object? params});
+  external factory RequestArguments({String method, JSAny? params});
 }
